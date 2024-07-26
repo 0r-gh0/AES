@@ -1,0 +1,78 @@
+\documentclass[english, msc, oneside]{layout/observatory-thesis}
+\usepackage[utf8]{inputenx}
+
+
+
+\usepackage{graphicx} 
+\usepackage{amsmath,amssymb,amsthm}
+
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage{caption}
+
+\usepackage{pdfpages}
+\usepackage{mdframed}
+\usepackage{lipsum}
+
+\usepackage{fancyhdr}
+\usepackage{ragged2e}
+\usepackage{amsfonts} 
+\usepackage{setspace}           
+\usepackage{float}
+
+\theoremstyle{definition}
+\newtheorem{exmp}{Example}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newmdtheoremenv{theo}{\textbf{Results}}
+
+
+\begin{document}
+
+
+\title{\textbf{A Survey to Infer on the \\Effects of COVID-19}}
+\subtitle{Exploring the Ripple Effects of the Pandemic on Daily Habits, Social Interactions, and Well-being} 
+\subject{\thesistypeshort Project Report}
+\author{M.Tech CrS $1^{st}$ Semester Students}
+\supervisor{Prof. ARGHA SARDAR}
+\projectstart{October 2023}
+\projectend{December 2023}
+\affiliation{M.Tech. First Year, ISI Kolkata}
+\address{Indian Statistical Institute, Kolkata 700108, India}
+\coverimage{layout/figures/free_frontpage/2.jpg}
+
+
+\frontmatter 
+
+\makecover 
+\maketitle 
+
+\disclaimer
+
+\input{frontmatter/Intro}
+\tableofcontents
+
+\mainmatter 
+
+\chapter{The Survey}
+\input{chap-one/one-one}
+
+\chapter{Demographic Details}
+\input{chap-two/two-one}
+
+\chapter{Data Analysis}
+\input{chap-three/three-one}
+
+\chapter{Estimation}
+\input{chap-four/four-one}
+
+\chapter{Hypothesis Testing}
+\input{chap-five/five-one}
+
+\includepdf[pages=-]{CREDIT.pdf}
+
+\input{frontmatter/outro}
+
+\end{document}

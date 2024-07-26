@@ -1,0 +1,54 @@
+\babel@toc {english}{}\relax 
+\setcounter {tocdepth}{0}
+\contentsline {chapter}{Abstract}{iv}{chapter*.1}%
+\setcounter {tocdepth}{2}
+\contentsline {chapter}{\numberline {1}The Survey}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}DATA DESCRIPTION}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Demographic Details}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Male-Female Ratio}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Employment Status}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Heads in Family}{5}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Age Group}{6}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Data Analysis}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Families getting effected}{7}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Deaths}{7}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3.2}Family Income and Expenses}{8}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Annual family Income}{8}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Annual family Expenses}{8}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Comparative Analysis of Family Expenditure Across Different\\ Employment Categories}{9}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Comparative Analysis of Income Change Across Different\\ Employment Categories}{10}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.5}Income Difference between Pre-Pandemic\\ and Post-Pandemic Situation}{12}{subsection.3.2.5}%
+\contentsline {section}{\numberline {3.3}Dependence on Cooked Food Delivery System}{13}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Changes in Online Food ordering frequency}{14}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Changes in Online Food ordering frequency \\ across different employment Categories}{15}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Vaccination Status}{16}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Medical Expenses}{17}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Weight Difference}{18}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Outdoor Socialization}{19}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Going Outside}{19}{subsection.3.7.1}%
+\contentsline {subsection}{\numberline {3.7.2}Social Interaction}{19}{subsection.3.7.2}%
+\contentsline {subsection}{\numberline {3.7.3}Precautionary Measures taken up by Individuals}{20}{subsection.3.7.3}%
+\contentsline {section}{\numberline {3.8}Screen-time}{22}{section.3.8}%
+\contentsline {subsection}{\numberline {3.8.1}Changes in Screen time}{22}{subsection.3.8.1}%
+\contentsline {subsection}{\numberline {3.8.2}Screen time Frequency}{22}{subsection.3.8.2}%
+\contentsline {subsection}{\numberline {3.8.3}Screen time Percentage}{23}{subsection.3.8.3}%
+\contentsline {section}{\numberline {3.9}Mental Health}{24}{section.3.9}%
+\contentsline {subsection}{\numberline {3.9.1}Mental Health conditions}{24}{subsection.3.9.1}%
+\contentsline {subsection}{\numberline {3.9.2}Mental Health across different Employment categories}{25}{subsection.3.9.2}%
+\contentsline {section}{\numberline {3.10}Effects on Education System}{26}{section.3.10}%
+\contentsline {subsection}{\numberline {3.10.1}Association with any Institutional Activities}{26}{subsection.3.10.1}%
+\contentsline {section}{\numberline {3.11}Work from Home}{27}{section.3.11}%
+\contentsline {section}{\numberline {3.12}Healthy Habits taken up by Individuals}{28}{section.3.12}%
+\contentsline {section}{\numberline {3.13}Proclivity for Physical Exercise - Before and After COVID-19}{29}{section.3.13}%
+\contentsline {section}{\numberline {3.14}Evolving Impact of Widespread Sanitizer Use}{30}{section.3.14}%
+\contentsline {section}{\numberline {3.15}Financial Coping Skills}{31}{section.3.15}%
+\contentsline {section}{\numberline {3.16}General awareness in controlling a pandemic in near-future}{32}{section.3.16}%
+\contentsline {chapter}{\numberline {4}Estimation}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Point Estimation of the Proportion of COVID-19 \\ Positive Cases in the Survey}{33}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Point Estimation}{33}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Maximum Likelihood Estimate (MLE)}{34}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Interval Estimation of Mean Difference of Monthly Expenditure \\ (Before-After COVID)}{36}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Hypothesis Testing}{37}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Analysis on Weight Difference before and after COVID outbreak}{37}{section.5.1}%
+\contentsline {chapter}{Credits}{42}{chapter*.49}%
+\contentsfinish 

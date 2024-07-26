@@ -1,0 +1,158 @@
+\section{Point Estimation of the Proportion of COVID-19 \\ Positive Cases in the Survey}
+
+\subsection{Point Estimation}
+
+The following report presents a \textbf{point estimation analysis} regarding the proportion of individuals tested positive for COVID-19 within our survey. The aim is to provide a precise estimate of the mean percentage of individuals who tested positive for COVID-19 based on the collected survey data of $230$ individuals.
+
+\
+
+Out of $230$ participants, $107$ individuals have been identified as having undergone COVID-19 tests. The point estimation we want to compute is based on the proportion of positive results within the surveyed population.
+
+\ 
+
+Consider $X_{1}, \ \ldots \ , X_{n}$ being the random variables representing COVID-19 test results for $n$-individuals.
+
+\ 
+
+Now, let $p$ be the probability that a particular person has a positive test result, i.e., $X_{i}$ being "Yes" or $1$ has the probability $p$.
+
+\ 
+
+Then,
+
+\[ 
+X_{i} = \left\{
+\begin{array}{ll}
+        1 & \text{with probability } \textit{p} \text{ (indicates "\textbf{Yes}" instance)} \\
+        0 & \text{with probability } \textit{1 - p} \text{ (indicates "\textbf{No}" instance)}
+\end{array} 
+\right. 
+\]
+$$\forall \text{ \ i \ = \ 1 \ \ldots \, n}.$$
+
+and each individual should have their independent test result. Thus :
+$$X_{1} \ \ldots \ X_{n} \ \sim \ \text{IID Ber(\textbf{p})}$$
+Therefore, $E(X_{i}) \ = \ p, \ \ Var(X_{i}) \ = \ p(1 - p) \ \ \forall \ i \ = \ 1 \ \ldots \ \ldots \ n$.
+
+\
+
+Here, a natural choice to estimate the population mean $p$ is the sample mean
+$$\Bar{x} \ = \ \frac{x_{1} + \ldots + x_{n}}{n}$$
+which is our test-statistic $T$.
+$$T(X_{1}, \ \ldots \ , X_{n}) \ = \ \Bar{X} \ = \ \frac{X_{1} + \ldots + X_{n}}{n}$$
+
+\ 
+
+Now,
+$$E[T(X_{1}, \ \ldots \ , X_{n})] \ = \ E[\Bar{X}] \ = \ \frac{1}{n} \cdot \{ E[X_{1}] + \ \ldots \ + E[X_{n}] \}$$
+$$= \ \frac{1}{n}\cdot n\cdot p \ = \ p \ \ \text{(as $E[X_{i}] \ = \ p) \ \ \forall \ i \ = \ 1,\ 2, \ \ldots \ ,\ n$ } $$
+
+\ 
+
+Hence, $T(X_{1}, \ \ldots \ , X_{n}) \ = \ \Bar{X}$ is an unbiased estimator of $p$.
+
+\ 
+
+In our observed data, $n \ = \ 107$
+$$\text{Sample mean} \ = \ \Bar{x} \ = \ \frac{x_{1} + \ \ldots \ + x_{n}}{n} \ = \ \frac{48}{107} \ \approx \ 0.448598$$
+Since, the number of COVID positive results in the data is $48$ out of $107$ positive tests.
+
+\
+
+Sample Variance, $SD \ = \ \sqrt{\frac{48 \ \times \ 59}{106 \ \times \ 107}} \ \approx \ 0.49691$ \\
+Thus, sample mean $\Bar{x} \ = \ 0.448598$ being an estimate of $p$ while $\Bar{X}$ being estimator for population quantity $p$ along with standard error,
+$$SE \ = \ \frac{SD}{\sqrt{n}} \ = \ 0.048307$$
+Since, $SE$ here is very small, therefore for large sample sizes (i.e. when $n \ \to \ \infty$), the standard error decreases further. 
+
+\ 
+
+\subsection{Maximum Likelihood Estimate (MLE)}
+
+Now, we follow the following steps to compute the MLE of $p$.
+
+$$L(p) \ = \ \prod_{i = 1}^{n} \Pr \{ X_{i} \} \ = \ \prod_{i = 1}^{n} p^{x_{i}} \cdot (1  - p)^{1 - x_{i}} \ = \ p^{\sum_{i = 1}^{n} x_{i}} \cdot (1 - p)^{n \ - \ \sum_{i = 1}^{n} x_{i}}$$
+where, $$\Pr \{ x_{i} \} \ = \ P[X_{i} \ = \ x_{i}] \ = \ p^{x_{i}} \cdot (1-p)^{1 \ - \ x_{i}}$$
+
+\ 
+
+Here, we will maximize the likelihood $l(p) \ = \ \log_{e} L(p)$
+$$l(p) \ = \ \sum_{i = 1}^{n} x_{i} \cdot \log p \ + \ (n \ - \ \sum_{i = 1}^{n} x_{i}) \cdot \log (1 - p)$$
+$$l^{\prime} (p) \ = \ \frac{\sum_{i = 1}^{n} x_{i}}{p} \ - \ \frac{n - \sum_{i = 1}^{n} x_{i}}{1 - p}$$
+
+$$ \text{For } l^{\prime} (p) \ = \ 0 \ \implies \ (1 - p) \cdot \sum_{i = 1}^{n} x_{i} \ = \ p \cdot (n \ - \ \sum_{i = 1}^{n} x_{i})  $$
+
+$$\implies \ p \ = \ \frac{\sum_{i = 1}^{n} x_{i}}{n} \ = \ \Bar{x}$$
+
+We have,
+$$l^{\prime \prime}(p) \vert_{p = \Bar{x}} \ = \ \left(- \ \frac{\sum_{i = 1}^{n} x_{i}}{p^{2}} \ - \ \frac{n - \sum_{i = 1}^{n} x_{i}}{(1 - p)^{2}}\right) \Big|_{p = \bar{x}} \ = \ - \ \frac{n}{\Bar{x}} \ - \ \frac{n \cdot (1 - \Bar{x})}{(1 - \Bar{x})^{2}} \ = \ - \ \frac{n}{\Bar{x}} \ - \ \frac{n}{1 - \Bar{x}}$$
+
+\ 
+
+Substituting our observed value of $n, \ \Bar{x}$ we get,
+$$l^{\prime \prime}(p) \vert_{p = \Bar{x}} \ = \ - \frac{n}{\Bar{x}(1 - \Bar{x})} \ = \ - \ 481.54 \ < \ 0 \ \ \forall \ p $$
+
+Thus, we have $l(p)$ is maximum at $p \ = \ \Bar{x}$. So finally,
+$$\hat{p} \ = \ \Bar{x} \ = \ \frac{x_{1} + \ \ldots \ + x_{n}}{n}$$
+
+From our observed data,
+$$\hat{p} \ = \ 0.448598$$ 
+is the \textbf{MLE} of $p$.
+
+\ 
+
+Hence, the MLE indicates that approximately $44.8598 \%$ of the surveyed \\ population tested positive for COVID-19. This estimation is an alignment with the earlier point estimate derived using sample proportions.
+
+\
+
+Thus, $\Bar{X}$ being consistent estimator of $p$ as well as unbiased.
+
+\ 
+
+While the MLE`s are the consistent estimator and provide a robust estimate based on the given sample data, further investigation considering larger sample sizes (i.e. when $n \to \infty$) could refine the accuracy of the estimation.
+
+\ 
+
+\section{Interval Estimation of Mean Difference of Monthly Expenditure \\ (Before-After COVID)}
+
+Here, we want to estimate the mean difference of monthly medical expenditure. We have collected data from $230$ individuals, depending on which we carry out the estimation : \\
+
+Consider $(X_{1}, \ Y_{1}) \ , \ \ldots \ ,  \ (X_{n}, \ Y_{n})$ are paired data on $n$-individuals where
+$$\{ X_{1}, \ \ldots \, X_{n}\} : \ \text{be the monthly expenditure of $n$-individuals before COVID}$$
+$$\{ Y_{1}, \ \ldots \, Y_{n}\} : \ \text{be the monthly expenditure of $n$-individuals after COVID}$$
+
+\ 
+
+Let's Take, 
+$$D_{i} \ = \ Y_{i} \ - \ X_{i} , \ \ \forall \ i \ = \ 1, 2,\ \ldots, \ n$$
+$$\Bar{D} \ = \ \frac{1}{n} \cdot \sum_{i = 1}^{n} D_{i} \ \sim \ N (\mu_{d}, \sigma_{d}^{2})$$
+where $\mu_{d} \ = \ \mu_{y} \ - \ \mu_{x}$ and $\mu_{x}$, \ $\mu_{y}$ are the population means of $X$ and $Y$ respectively.
+
+\ 
+
+We want to estimate $\mu_{d}$ by the \textit{Sample mean difference} $\Bar{d}$ i.e. $\hat{\mu_{d}} \ = \ \Bar{d}$.
+
+\ 
+
+As, $E(\Bar{d}) \ = \ \frac{1}{n} \cdot \sum_{i = 1}^{n} E(d_{i}) \ = \ \frac{n \cdot \mu_{d}}{n} \ = \ \mu_{d}$, so $\Bar{d}$ is an unbiased estimator of $\mu_{d}$.\\
+
+Also, $\frac{\Bar{D} - \mu_{d}}{\frac{s_{d}}{\sqrt{n}}} \ \sim \ t_{n - 1}$, where $s_{d}$ is the \textit{Sample standard deviation}.
+
+\
+
+Then the $95\%$ paired-$t$ confidence interval for $\mu_{d}$ is given by 
+$$\mu_{d} \ \pm \ t_{(0.025, \ n-1)} \ \times \ \frac{s_{d}}{\sqrt{n}}$$
+So, from the collected data, we have : \\
+\fbox{\parbox{\textwidth}{
+$$\Bar{d} \ = \ 1920.739$$
+$$s_{d} \ = \ 9756.072$$
+$$n \ = \ 230$$
+$$\text{Confidence} \ = \ 0.95$$
+$$t_{0.025, 229} \ = \ 1.970377$$
+\begin{center}
+So, Confident interval for $\mu_{d} = (653.2025, \ 3188.275)$
+\end{center}
+}}
+
+\ 
+
+\textbf{Conclusion:} We have a $95\%$ confidence that the mean difference of monthly medical expenditure falls within the interval $(653.2025, \ 3188.275)$. This suggests that, on average, monthly expenses have increased by significant margins during the COVID period.
