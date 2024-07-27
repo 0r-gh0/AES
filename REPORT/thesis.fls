@@ -1,6 +1,6 @@
-PWD c:\Users\argha\Desktop\AES\STATISTICS PROJECT
+PWD c:\Users\argha\Desktop\GIT_WEBSITE\AES\REPORT
 INPUT C:\Users\argha\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\argha\Desktop\AES\STATISTICS PROJECT\thesis.tex
+INPUT c:\Users\argha\Desktop\GIT_WEBSITE\AES\REPORT\thesis.tex
 OUTPUT thesis.log
 INPUT .\layout\observatory-thesis.cls
 INPUT layout\observatory-thesis.cls

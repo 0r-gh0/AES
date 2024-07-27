@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.6.10)  27 JUL 2024 00:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.6.10)  27 JUL 2024 14:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/argha/Desktop/AES/STATISTICS PROJECT/thesis.tex"
-(c:/Users/argha/Desktop/AES/STATISTICS PROJECT/thesis.tex
+**c:/Users/argha/Desktop/GIT_WEBSITE/AES/REPORT/thesis.tex
+(c:/Users/argha/Desktop/GIT_WEBSITE/AES/REPORT/thesis.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
 (layout/observatory-thesis.cls
@@ -3888,14 +3888,14 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  52950 strings out of 474486
- 1050923 string characters out of 5743755
+ 1050903 string characters out of 5743755
  1940542 words of memory out of 5000000
  73684 multiletter control sequences out of 15000+600000
  892575 words of font info for 469 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 124i,17n,121p,2486b,1449s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 124i,17n,121p,2484b,1449s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\argha\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-ExtraLight.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-Light.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-LightItalic.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-Medium.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-MediumItalic.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-Regular.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/inter/Inter-Thin.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/rtxmi.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txexs.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/txfonts/txsyc.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtx/txsys.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtxsf/zsfmi-reg.pfb><C:/Users/argha/AppData/Local/Programs/MiKTeX/fonts/type1/public/newtxsf/zsfmia-reg.pfb>
-Output written on thesis.pdf (48 pages, 3902820 bytes).
+Output written on thesis.pdf (48 pages, 3902823 bytes).
 PDF statistics:
  856 PDF objects out of 1000 (max. 8388607)
  177 named destinations out of 1000 (max. 500000)
