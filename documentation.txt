@@ -2,3 +2,15 @@ Unions are conceptually similar to Structures. The only difference between them 
 
 In C, typedef is used to give an existing type an alias or a new name.
 
+HOW TO INPUT INTO OUR data
+
+    HexWord word;
+    // Initialize the word with hexadecimal values (example: 0x1A2B3C4D)
+    word.bytes[0].byte = 0x1A;
+    word.bytes[1].byte = 0x2B;
+    word.bytes[2].byte = 0x3C;
+    word.bytes[3].byte = 0x4D;
+
+    // Print the hexadecimal word
+    printHexWord(word);
+
