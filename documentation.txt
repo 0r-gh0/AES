@@ -1,0 +1,4 @@
+Unions are conceptually similar to Structures. The only difference between them is memory allocation. Structure allocates storage space for all its members separately; Whereas, Union allocates one common storage space for all its members. Members of a union can only be accessed one at a time. The union data type was invented to prevent memory fragmentation. The union data type prevents fragmentation by creating a standard size of certain data everything else remains same as Structures
+
+In C, typedef is used to give an existing type an alias or a new name.
+
