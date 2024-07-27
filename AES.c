@@ -36,7 +36,20 @@ void printHexWord(HexWord word) {
 }
 
 // To Parse the Key String and copy it into the Hex Word
-void parseHexWords(const char *hexString, HexWord *wordArray, unsigned char len) {
+void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char len) {
+    unsigned char wordCount = len / 8;
+
+    for (unsigned char i = 0; i < wordCount; i++) {
+        for (unsigned char j = 0; j < 4; j++) {
+            unsigned char highNibble = hexString[i * 8 + j * 2];         // MSB
+            unsigned char lowNibble = hexString[i * 8 + j * 2 + 1];      // LSB
+            wordArray[i].bytes[j].byte = (hexCharToByte(lowNibble) << 4) | hexCharToByte(highNibble); // Little-Endian
+        }
+    }
+}
+
+// To Parse the Key String and copy it into the Hex Word
+void colParseHexWords(const char *hexString, HexWord *wordArray, unsigned char len) {
     unsigned char wordCount = len / 8;
 
     for (unsigned char i = 0; i < wordCount; i++) {
@@ -103,14 +116,16 @@ int main(){
     // unsigned char keyLen = 64;
 
     unsigned char keyCount = keyLen/8;
-    HexWord keyArray[keyCount];
+    HexWord rowKeyArray[keyCount] ;
+    HexWord colKeyArray[keyCount] ;
     
     // Parse the hex string into words
-    parseHexWords(key, keyArray, keyLen);
+    rowParseHexWords(key, rowKeyArray, keyLen);
+    colParseHexWords(key, colKeyArray, keyLen);
 
     // Print the parsed words
     for (unsigned char i = 0; i < keyCount; i++) {
-        printHexWord(keyArray[i]);
+        printHexWord(rowKeyArray[i]);
     }
 
     return 0;
