@@ -14,3 +14,8 @@ HOW TO INPUT INTO OUR data
     // Print the hexadecimal word
     printHexWord(word);
 
+    Inside ParseHexWords
+
+    printf("%c\t%c\n", lowNibble, highNibble);
+    printf("%X\t%X\n", hexCharToByte(lowNibble), hexCharToByte(highNibble));
+

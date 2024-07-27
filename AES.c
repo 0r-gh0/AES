@@ -14,7 +14,7 @@ typedef struct {                    // "typedef" provides existing data types wi
     HexByte bytes[4];               // Array of 4 HexBytes to form a word (8 hex characters)
 } HexWord;
 
-// Convert each parsed Character to HEX
+// Convert each parsed Character to Byte
 unsigned char hexCharToByte(char hex) {
     if (hex >= '0' && hex <= '9') {
         return hex - '0';
@@ -35,14 +35,15 @@ void printHexWord(HexWord word) {
     printf("\n");
 }
 
+// To Parse the Key String and copy it into the Hex Word
 void parseHexWords(const char *hexString, HexWord *wordArray, unsigned char len) {
     unsigned char wordCount = len / 8;
 
     for (unsigned char i = 0; i < wordCount; i++) {
         for (unsigned char j = 0; j < 4; j++) {
-            unsigned char lowNibble = hexString[i * 8 + j * 2];
-            unsigned char highNibble = hexString[i * 8 + j * 2 + 1];
-            wordArray[i].bytes[j].byte = (hexCharToByte(highNibble) << 4) | hexCharToByte(lowNibble);
+            unsigned char highNibble = hexString[i * 8 + j * 2];         // MSB
+            unsigned char lowNibble = hexString[i * 8 + j * 2 + 1];      // LSB
+            wordArray[i].bytes[j].byte = (hexCharToByte(lowNibble) << 4) | hexCharToByte(highNibble); // Little-Endian
         }
     }
 }
