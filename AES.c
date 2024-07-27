@@ -50,11 +50,11 @@ void parseHexWords(const char *hexString, HexWord *wordArray, unsigned char len)
 
 int main(){
 
-    const char *key = "e2fc70d2"; // Example input string
-    unsigned char keyLen = 8;
+    // const char *key = "e2fc70d2"; // Short Test Key Stream
+    // unsigned char keyLen = 8;
 
-    // const char *key = "2b7e151628aed2a6abf7158809cf4f3c"; // Example input string
-    // unsigned char keyLen = 32;
+    const char *key = "2b7e151628aed2a6abf7158809cf4f3c"; // Example input string
+    unsigned char keyLen = 32;
 
     // const char *key = "8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b"; // Example input string
     // unsigned char keyLen = 48;
