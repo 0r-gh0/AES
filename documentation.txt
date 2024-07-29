@@ -38,3 +38,14 @@ HOW TO INPUT INTO OUR data
     09CF4F3C
     A2385AB4
 
+    //Right Rotate Once
+HexWord Rotate(const HexWord A){
+    HexWord temp;
+    temp.bytes[3].byte = A.bytes[0].byte;
+    temp.bytes[0].byte = A.bytes[1].byte;
+    temp.bytes[1].byte = A.bytes[2].byte;
+    temp.bytes[2].byte = A.bytes[3].byte;
+    return temp;
+}
+
+printHexWord(Rotate(rowKeyArray[3]));
