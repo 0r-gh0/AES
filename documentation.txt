@@ -110,3 +110,25 @@ printHexWord(SubWord(rowKeyArray[3]));
 But it Should be
 09CF4F3C
 018A84EB
+
+Finally 
+
+After Swapping nibbles
+
+// Done because of Endienness
+unsigned char swapNibbles(unsigned char byte) {
+    return ((byte & 0x0F) << 4) | ((byte & 0xF0) >> 4);
+}
+
+// To Perform Substitution
+HexWord SubWord(const HexWord A){
+    // Check this about Little-Endienness
+    HexWord temp;
+    temp.bytes[0].byte = swapNibbles(sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)]);
+    temp.bytes[1].byte = swapNibbles(sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)]);
+    temp.bytes[2].byte = swapNibbles(sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)]);
+    temp.bytes[3].byte = swapNibbles(sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)]);
+    return temp;
+}
+
+018A84EB

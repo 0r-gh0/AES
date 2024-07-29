@@ -1,18 +1,9 @@
 #include <stdio.h>
 
-// Byte Containing 2 Hexadecimal Characters
-typedef union {                     // Union allocates one common storage space for all its members
-    unsigned char byte;             // Store 2 hexadecimal characters (1 byte)
-    struct {                        // Structure declaration
-        unsigned char high : 4;     // High nibble (4 bits)
-        unsigned char low : 4;      // Low nibble (4 bits)
-    } nibbles;
-} HexByte;
-
-// Word Containing 4 Bytes or 8 Hexadecimal Characters
-typedef struct {                    // "typedef" provides existing data types with a new name
-    HexByte bytes[4];               // Array of 4 HexBytes to form a word (8 hex characters)
-} HexWord;
+/*
+ * Emit the sbox as volatile const to prevent the compiler from doing
+ * constant folding on sbox references involving fixed indexes.
+ */
 
 static volatile const unsigned char sBox[256] = {
 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
@@ -49,6 +40,20 @@ static volatile const unsigned char sBox[256] = {
 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
 };
 
+// Byte Containing 2 Hexadecimal Characters
+typedef union {                     // Union allocates one common storage space for all its members
+    unsigned char byte;             // Store 2 hexadecimal characters (1 byte)
+    struct {                        // Structure declaration
+        unsigned char high : 4;     // High nibble (4 bits)
+        unsigned char low : 4;      // Low nibble (4 bits)
+    } nibbles;
+} HexByte;
+
+// Word Containing 4 Bytes or 8 Hexadecimal Characters
+typedef struct {                    // "typedef" provides existing data types with a new name
+    HexByte bytes[4];               // Array of 4 HexBytes to form a word (8 hex characters)
+} HexWord;
+
 //Defining XOR Organically
 HexWord XOR(const HexWord A, const HexWord B){
     HexWord temp;
@@ -82,31 +87,18 @@ unsigned char hexCharToByte(char hex) {
     }
 }
 
+// Done because of Endienness
+unsigned char swapNibbles(unsigned char byte) {
+    return ((byte & 0x0F) << 4) | ((byte & 0xF0) >> 4);
+}
+
 // To Perform Substitution
 HexWord SubWord(const HexWord A){
-    // HexWord temp;
-    // HexWord hex;
-    // unsigned char val;
-    // val = hexCharToByte(sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)]);
-    // temp.bytes[0].nibbles.high = hexCharToByte(val).nibbles.high;      // To Handle the Little-Endienness of the System
-    // temp.bytes[0].nibbles.low = val.nibbles.low;
-    // val = sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)];
-    // temp.bytes[1].nibbles.high = val.nibbles.high;
-    // temp.bytes[1].nibbles.low = val.nibbles.low;
-    // val = sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)];
-    // temp.bytes[2].nibbles.high = val.nibbles.high;
-    // temp.bytes[2].nibbles.low = val.nibbles.low;
-    // val = sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)];
-    // temp.bytes[3].nibbles.high = val.nibbles.high;
-    // temp.bytes[3].nibbles.low = val.nibbles.low;
-
-
-    // Check this about Little-Endienness
-    HexWord temp;
-    temp.bytes[0].byte = sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)];
-    temp.bytes[1].byte = sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)];
-    temp.bytes[2].byte = sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)];
-    temp.bytes[3].byte = sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)];
+    HexWord temp;   // Check this about Little-Endienness
+    temp.bytes[0].byte = swapNibbles(sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)]);
+    temp.bytes[1].byte = swapNibbles(sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)]);
+    temp.bytes[2].byte = swapNibbles(sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)]);
+    temp.bytes[3].byte = swapNibbles(sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)]);
     return temp;
 }
 
@@ -131,13 +123,6 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
     }
 }
 
-/*
- * Emit the sbox as volatile const to prevent the compiler from doing
- * constant folding on sbox references involving fixed indexes.
- */
-
-
-
 // void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsigned char sizeNK){
 //     HexWord Rcon[11] = {0x00000000, 0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000};
 
@@ -148,8 +133,9 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
 //     for(unsigned char i = 4; i < 4*sizeNK; i++){    // Will Change it later
 //         temp = rowKeyArray[i - 1];
 //         if(i % sizeNK == 0){
-//             temp = temp ^ Rcon[i/sizeNK];
+//             temp = XOR(SubWord(Rotate(temp)),Rcon[i/sizeNK]);
 //         }
+
 //     }
 // }
 
@@ -179,12 +165,6 @@ int main(){
     for (unsigned char i = 0; i < keyCount; i++) {
         printHexWord(rowKeyArray[i]);
     }
-
-    // printHexWord(Rotate(rowKeyArray[3]));
-
-    // printf("%X", sBox[1]);
-
-    // printHexWord(SubWord(rowKeyArray[3]));
 
     // for (unsigned char i = 0; i < 4; i++) {
     //     printHexWord(keyScheduling[i]);
