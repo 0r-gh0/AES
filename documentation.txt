@@ -19,3 +19,22 @@ HOW TO INPUT INTO OUR data
     printf("%c\t%c\n", lowNibble, highNibble);
     printf("%X\t%X\n", hexCharToByte(lowNibble), hexCharToByte(highNibble));
 
+    XOR Defn.
+
+    HexWord XOR(const HexWord A, const HexWord B){
+    HexWord temp;
+    temp.bytes[0].byte = A.bytes[0].byte ^ B.bytes[0].byte;
+    temp.bytes[1].byte = A.bytes[1].byte ^ B.bytes[1].byte;
+    temp.bytes[2].byte = A.bytes[2].byte ^ B.bytes[2].byte;
+    temp.bytes[3].byte = A.bytes[3].byte ^ B.bytes[3].byte;
+    return temp;
+}
+
+    HexWord temp = XOR(rowKeyArray[2],rowKeyArray[3]);
+    printHexWord(temp);
+
+    Example 
+    ABF71588
+    09CF4F3C
+    A2385AB4
+
