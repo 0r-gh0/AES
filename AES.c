@@ -54,6 +54,14 @@ typedef struct {                    // "typedef" provides existing data types wi
     HexByte bytes[4];               // Array of 4 HexBytes to form a word (8 hex characters)
 } HexWord;
 
+// Print the Hexadecimal Word
+void printHexWord(HexWord word) {
+    for (unsigned char i = 0; i < 4; i++) {
+        printf("%X%X", word.bytes[i].nibbles.high, word.bytes[i].nibbles.low);
+    }
+    printf("\n");
+}
+
 //Defining XOR Organically
 HexWord XOR(const HexWord A, const HexWord B){
     HexWord temp;
@@ -74,19 +82,6 @@ HexWord Rotate(const HexWord A){
     return temp;
 }
 
-// Convert each parsed Character to Byte
-unsigned char hexCharToByte(char hex) {
-    if (hex >= '0' && hex <= '9') {
-        return hex - '0';
-    } else if (hex >= 'A' && hex <= 'F') {
-        return hex - 'A' + 10;
-    } else if (hex >= 'a' && hex <= 'f') {
-        return hex - 'a' + 10;
-    } else {
-        return 0; // Invalid character
-    }
-}
-
 // Done because of Endienness
 unsigned char swapNibbles(unsigned char byte) {
     return ((byte & 0x0F) << 4) | ((byte & 0xF0) >> 4);
@@ -102,12 +97,27 @@ HexWord SubWord(const HexWord A){
     return temp;
 }
 
-// Print the Hexadecimal Word
-void printHexWord(HexWord word) {
-    for (unsigned char i = 0; i < 4; i++) {
-        printf("%X%X", word.bytes[i].nibbles.high, word.bytes[i].nibbles.low);
+HexWord Rcon(unsigned char k){
+    unsigned char RCONST[11] = {0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
+    HexWord temp;
+    temp.bytes[0].byte = RCONST[k];
+    temp.bytes[1].byte = 0x00;
+    temp.bytes[2].byte = 0x00;
+    temp.bytes[3].byte = 0x00;
+    return temp;
+}
+
+// Convert each parsed Character to Byte
+unsigned char hexCharToByte(char hex) {
+    if (hex >= '0' && hex <= '9') {
+        return hex - '0';
+    } else if (hex >= 'A' && hex <= 'F') {
+        return hex - 'A' + 10;
+    } else if (hex >= 'a' && hex <= 'f') {
+        return hex - 'a' + 10;
+    } else {
+        return 0; // Invalid character
     }
-    printf("\n");
 }
 
 // To Parse the Key String and copy it into the Hex Word
@@ -124,8 +134,6 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
 }
 
 // void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsigned char sizeNK){
-//     HexWord Rcon[11] = {0x00000000, 0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000};
-
 //     for(unsigned char i = 0; i < sizeNK; i++){
 //         keyScheduling[i] = rowKeyArray[i];
 //     }
@@ -133,9 +141,9 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
 //     for(unsigned char i = 4; i < 4*sizeNK; i++){    // Will Change it later
 //         temp = rowKeyArray[i - 1];
 //         if(i % sizeNK == 0){
-//             temp = XOR(SubWord(Rotate(temp)),Rcon[i/sizeNK]);
+//             temp = XOR(SubWord(Rotate(temp)),Rcon(i/sizeNK));
 //         }
-
+//         keyScheduling[i] = XOR(keyScheduling[i - sizeNK],temp);
 //     }
 // }
 
@@ -155,18 +163,20 @@ int main(){
 
     unsigned char keyCount = keyLen/8;
     HexWord rowKeyArray[keyCount] ;
-    HexWord keyScheduling[4] ;
+    HexWord keyScheduling[44] ;
     
     // Parse the hex string into words
     rowParseHexWords(key, rowKeyArray, keyLen);
     // keyExpansion(rowKeyArray, keyScheduling, 4);
 
     // Print the parsed words
-    for (unsigned char i = 0; i < keyCount; i++) {
-        printHexWord(rowKeyArray[i]);
-    }
+    // for (unsigned char i = 0; i < keyCount; i++) {
+    //     printHexWord(rowKeyArray[i]);
+    // }
 
-    // for (unsigned char i = 0; i < 4; i++) {
+    printHexWord(Rcon(3));
+
+    // for (unsigned char i = 0; i < 44; i++) {
     //     printHexWord(keyScheduling[i]);
     // }
 
