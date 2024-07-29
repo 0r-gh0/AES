@@ -48,19 +48,6 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
     }
 }
 
-// To Parse the Key String and copy it into the Hex Word
-void colParseHexWords(const char *hexString, HexWord *wordArray, unsigned char len) {
-    unsigned char wordCount = len / 8;
-
-    for (unsigned char i = 0; i < wordCount; i++) {
-        for (unsigned char j = 0; j < 4; j++) {
-            unsigned char highNibble = hexString[i * 8 + j * 2];         // MSB
-            unsigned char lowNibble = hexString[i * 8 + j * 2 + 1];      // LSB
-            wordArray[i].bytes[j].byte = (hexCharToByte(lowNibble) << 4) | hexCharToByte(highNibble); // Little-Endian
-        }
-    }
-}
-
 /*
  * Emit the sbox as volatile const to prevent the compiler from doing
  * constant folding on sbox references involving fixed indexes.
