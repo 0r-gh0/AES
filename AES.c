@@ -72,7 +72,7 @@ HexWord XOR(const HexWord A, const HexWord B){
     return temp;
 }
 
-//Right Rotate Once
+//Right Rotate Once a HexWord
 HexWord Rotate(const HexWord A){
     HexWord temp;
     temp.bytes[3].byte = A.bytes[0].byte;
@@ -82,7 +82,7 @@ HexWord Rotate(const HexWord A){
     return temp;
 }
 
-// Done because of Endienness
+// Swapping the First 4 Bits with the Last 4 Bits of a Byte because of Little-Endienness
 unsigned char swapNibbles(unsigned char byte) {
     return ((byte & 0x0F) << 4) | ((byte & 0xF0) >> 4);
 }
@@ -134,18 +134,16 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
 }
 
 void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const int sizeNK){
+    HexWord temp;
     for(int i = 0; i < sizeNK; i++){
         keyScheduling[i] = rowKeyArray[i];
     }
-    HexWord temp;
-    for(int i = 4; i < 4*sizeNK; i++){    // Will Change it later
-        temp = rowKeyArray[i - 1];
-        printf("Hii !!  : %c", i);
-        printHexWord(temp);
+    for(int i = 4; i < 44; i++){    // Will Change it later for Much more Generalized version
+        temp = keyScheduling[i - 1];
         if(i % sizeNK == 0){
-            temp = XOR(SubWord(Rotate(temp)),Rcon(i/sizeNK));
+            temp = XOR(SubWord(Rotate(temp)), Rcon(i/sizeNK));
         }
-        keyScheduling[i] = XOR(keyScheduling[i - sizeNK],temp);
+        keyScheduling[i] = XOR(keyScheduling[i - sizeNK], temp);
     }
 }
 
@@ -163,20 +161,21 @@ int main(){
     // const char *key = "603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4"; // Example input string
     // unsigned char keyLen = 64;
 
-    unsigned char keyCount = keyLen/8;
+    int keyCount = keyLen/8;
     HexWord rowKeyArray[keyCount] ;
     HexWord keyScheduling[44] ;
     
-    // Parse the hex string into words
-    rowParseHexWords(key, rowKeyArray, keyLen);
-    keyExpansion(rowKeyArray, keyScheduling, 4);
+    rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string into words
+    keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm
 
-    // Print the parsed words
+    // Print the Parsed Words
     // for (unsigned char i = 0; i < keyCount; i++) {
     //     printHexWord(rowKeyArray[i]);
     // }
-
-    for (unsigned char i = 0; i < 44; i++) {
+    
+    // Print the Key Schedule Output
+    for (int i = 0; i < 44; i++) {
+        printf("Round %d :: ", i);
         printHexWord(keyScheduling[i]);
     }
 
