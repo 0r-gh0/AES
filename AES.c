@@ -88,6 +88,21 @@ static volatile const unsigned char sBox[] = {
 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
 };
 
+void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsigned char sizeNK){
+    HexWord Rcon[11] = {0x00000000, 0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000};
+
+    for(unsigned char i = 0; i < sizeNK; i++){
+        keyScheduling[i] = rowKeyArray[i];
+    }
+    HexWord temp;
+    for(unsigned char i = 4; i < 4*sizeNK; i++){    // Will Change it later
+        temp = rowKeyArray[i - 1];
+        if(i % sizeNK == 0){
+            temp = Rcon[i/sizeNK];
+        }
+    }
+}
+
 int main(){
 
     // const char *key = "e2fc70d2"; // Short Test Key Stream
@@ -104,15 +119,19 @@ int main(){
 
     unsigned char keyCount = keyLen/8;
     HexWord rowKeyArray[keyCount] ;
-    HexWord colKeyArray[keyCount] ;
+    HexWord keyScheduling[4] ;
     
     // Parse the hex string into words
     rowParseHexWords(key, rowKeyArray, keyLen);
-    colParseHexWords(key, colKeyArray, keyLen);
+    keyExpansion(rowKeyArray, keyScheduling, 4);
 
     // Print the parsed words
     for (unsigned char i = 0; i < keyCount; i++) {
         printHexWord(rowKeyArray[i]);
+    }
+
+    for (unsigned char i = 0; i < 4; i++) {
+        printHexWord(keyScheduling[i]);
     }
 
     return 0;
