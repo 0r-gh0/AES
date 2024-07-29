@@ -14,13 +14,23 @@ typedef struct {                    // "typedef" provides existing data types wi
     HexByte bytes[4];               // Array of 4 HexBytes to form a word (8 hex characters)
 } HexWord;
 
-
+//Defining XOR Organically
 HexWord XOR(const HexWord A, const HexWord B){
     HexWord temp;
     temp.bytes[0].byte = A.bytes[0].byte ^ B.bytes[0].byte;
     temp.bytes[1].byte = A.bytes[1].byte ^ B.bytes[1].byte;
     temp.bytes[2].byte = A.bytes[2].byte ^ B.bytes[2].byte;
     temp.bytes[3].byte = A.bytes[3].byte ^ B.bytes[3].byte;
+    return temp;
+}
+
+//Right Rotate Once
+HexWord Rotate(const HexWord A){
+    HexWord temp;
+    temp.bytes[3].byte = A.bytes[0].byte;
+    temp.bytes[0].byte = A.bytes[1].byte;
+    temp.bytes[1].byte = A.bytes[2].byte;
+    temp.bytes[2].byte = A.bytes[3].byte;
     return temp;
 }
 
@@ -140,8 +150,7 @@ int main(){
         printHexWord(rowKeyArray[i]);
     }
 
-    HexWord temp = XOR(rowKeyArray[2],rowKeyArray[3]);
-    printHexWord(temp);
+    printHexWord(Rotate(rowKeyArray[3]));
 
     // for (unsigned char i = 0; i < 4; i++) {
     //     printHexWord(keyScheduling[i]);
