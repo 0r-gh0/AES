@@ -167,6 +167,49 @@ HexWord Rcon(unsigned char k){
 
 04000000
 
-
+Round 0 :: 2B7E1516
+Round 1 :: 28AED2A6
+Round 2 :: ABF71588
+Round 3 :: 09CF4F3C
+Round 4 :: A0FAFE17
+Round 5 :: 88542CB1
+Round 6 :: 23A33939
+Round 7 :: 2A6C7605
+Round 8 :: F2C295F2
+Round 9 :: 7A96B943
+Round 10 :: 5935807A
+Round 11 :: 7359F67F
+Round 12 :: 3D80477D
+Round 13 :: 4716FE3E
+Round 14 :: 1E237E44
+Round 15 :: 6D7A883B
+Round 16 :: EF44A541
+Round 17 :: A8525B7F
+Round 18 :: B671253B
+Round 19 :: DB0BAD00
+Round 20 :: D4D1C6F8
+Round 21 :: 7C839D87
+Round 22 :: CAF2B8BC
+Round 23 :: 11F915BC
+Round 24 :: 6D88A37A
+Round 25 :: 110B3EFD
+Round 26 :: DBF98641
+Round 27 :: CA0093FD
+Round 28 :: 4E54F70E
+Round 29 :: 5F5FC9F3
+Round 30 :: 84A64FB2
+Round 31 :: 4EA6DC4F
+Round 32 :: EAD27321
+Round 33 :: B58DBAD2
+Round 34 :: 312BF560
+Round 35 :: 7F8D292F
+Round 36 :: AC7766F3
+Round 37 :: 19FADC21
+Round 38 :: 28D12941
+Round 39 :: 575C006E
+Round 40 :: D014F9A8
+Round 41 :: C9EE2589
+Round 42 :: E13F0CC8
+Round 43 :: B6630CA6
 
 
