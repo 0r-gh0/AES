@@ -133,19 +133,21 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
     }
 }
 
-// void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsigned char sizeNK){
-//     for(unsigned char i = 0; i < sizeNK; i++){
-//         keyScheduling[i] = rowKeyArray[i];
-//     }
-//     HexWord temp;
-//     for(unsigned char i = 4; i < 4*sizeNK; i++){    // Will Change it later
-//         temp = rowKeyArray[i - 1];
-//         if(i % sizeNK == 0){
-//             temp = XOR(SubWord(Rotate(temp)),Rcon(i/sizeNK));
-//         }
-//         keyScheduling[i] = XOR(keyScheduling[i - sizeNK],temp);
-//     }
-// }
+void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const int sizeNK){
+    for(int i = 0; i < sizeNK; i++){
+        keyScheduling[i] = rowKeyArray[i];
+    }
+    HexWord temp;
+    for(int i = 4; i < 4*sizeNK; i++){    // Will Change it later
+        temp = rowKeyArray[i - 1];
+        printf("Hii !!  : %c", i);
+        printHexWord(temp);
+        if(i % sizeNK == 0){
+            temp = XOR(SubWord(Rotate(temp)),Rcon(i/sizeNK));
+        }
+        keyScheduling[i] = XOR(keyScheduling[i - sizeNK],temp);
+    }
+}
 
 int main(){
 
@@ -167,18 +169,16 @@ int main(){
     
     // Parse the hex string into words
     rowParseHexWords(key, rowKeyArray, keyLen);
-    // keyExpansion(rowKeyArray, keyScheduling, 4);
+    keyExpansion(rowKeyArray, keyScheduling, 4);
 
     // Print the parsed words
     // for (unsigned char i = 0; i < keyCount; i++) {
     //     printHexWord(rowKeyArray[i]);
     // }
 
-    printHexWord(Rcon(3));
-
-    // for (unsigned char i = 0; i < 44; i++) {
-    //     printHexWord(keyScheduling[i]);
-    // }
+    for (unsigned char i = 0; i < 44; i++) {
+        printHexWord(keyScheduling[i]);
+    }
 
     return 0;
 }
