@@ -100,7 +100,7 @@ HexWord SubWord(const HexWord A){
 HexWord Rcon(unsigned char k){
     unsigned char RCONST[11] = {0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
     HexWord temp;
-    temp.bytes[0].byte = RCONST[k];
+    temp.bytes[0].byte = swapNibbles(RCONST[k]); // Little-Endienness
     temp.bytes[1].byte = 0x00;
     temp.bytes[2].byte = 0x00;
     temp.bytes[3].byte = 0x00;

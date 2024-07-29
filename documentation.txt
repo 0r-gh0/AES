@@ -132,3 +132,41 @@ HexWord SubWord(const HexWord A){
 }
 
 018A84EB
+
+
+HexWord Rcon(unsigned char k){
+    unsigned char RCONST[11] = {0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
+    HexWord temp;
+    temp.bytes[0].byte = RCONST[k];
+    temp.bytes[1].byte = 0x00;
+    temp.bytes[2].byte = 0x00;
+    temp.bytes[3].byte = 0x00;
+    return temp;
+}
+
+printHexWord(Rcon(3));
+
+40000000
+
+so Little Endienness was needed
+
+// Done because of Endienness
+unsigned char swapNibbles(unsigned char byte) {
+    return ((byte & 0x0F) << 4) | ((byte & 0xF0) >> 4);
+}
+
+HexWord Rcon(unsigned char k){
+    unsigned char RCONST[11] = {0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1B, 0x36};
+    HexWord temp;
+    temp.bytes[0].byte = swapNibbles(RCONST[k]); // Little-Endienness
+    temp.bytes[1].byte = 0x00;
+    temp.bytes[2].byte = 0x00;
+    temp.bytes[3].byte = 0x00;
+    return temp;
+}
+
+04000000
+
+
+
+
