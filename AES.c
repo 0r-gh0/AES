@@ -147,6 +147,11 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
     }
 }
 
+// HexWord subBytes(HexWord inWord){
+//     HexWord temp[4];
+//     temp[0] = inWord[0];
+// }
+
 int main(){
 
     // const char *key = "e2fc70d2"; // Short Test Key Stream
@@ -155,6 +160,9 @@ int main(){
     const char *key = "2b7e151628aed2a6abf7158809cf4f3c"; // Example input string
     unsigned char keyLen = 32;
 
+    const char *in = "3243f6a8885a308d313198a2e0370734"; 
+    unsigned char inLen = 32;
+
     // const char *key = "8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b"; // Example input string
     // unsigned char keyLen = 48;
 
@@ -162,22 +170,26 @@ int main(){
     // unsigned char keyLen = 64;
 
     unsigned char keyCount = keyLen/8;
+    unsigned char inCount = inLen/8;
+
     HexWord rowKeyArray[keyCount] ;
+    HexWord input[inCount];
     HexWord keyScheduling[44] ;
     
-    rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string into words
-    keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm
+    // rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string into words
+    // keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm
+    rowParseHexWords(in, input, inLen);           // Parsing the Input String Into Words
 
     // Print the Parsed Words
-    // for (unsigned char i = 0; i < keyCount; i++) {
-    //     printHexWord(rowKeyArray[i]);
-    // }
+    for (unsigned char i = 0; i < 4; i++) {
+        printHexWord(input[i]);
+    }
     
     // Print the Key Schedule Output
-    for (unsigned char i = 0; i < 44; i++) {
-        printf("Round %d :: ", i);
-        printHexWord(keyScheduling[i]);
-    }
+    // for (unsigned char i = 0; i < 44; i++) {
+    //     printf("Round %d :: ", i);
+    //     printHexWord(keyScheduling[i]);
+    // }
 
     return 0;
 }
