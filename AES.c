@@ -147,14 +147,14 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
     }
 }
 
-void subBytes(HexWord *inWord, HexWord *temp){
+void subBytes(const HexWord *inWord, HexWord *temp){
     temp[0] = SubWord(inWord[0]);
     temp[1] = SubWord(inWord[1]);
     temp[2] = SubWord(inWord[2]);
     temp[3] = SubWord(inWord[3]);
 }
 
-void shfitRows(HexWord *inWord, HexWord *temp){
+void shfitRows(const HexWord *inWord, HexWord *temp){
     unsigned char tempHex1, tempHex2, tempHex3;
     tempHex1 = inWord[0].bytes[1].byte;
     temp[0].bytes[1].byte = inWord[1].bytes[1].byte;
