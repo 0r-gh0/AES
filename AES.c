@@ -147,11 +147,35 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
     }
 }
 
-void subBytes(const HexWord *inWord, HexWord *temp){
+void subBytes(HexWord *inWord, HexWord *temp){
     temp[0] = SubWord(inWord[0]);
     temp[1] = SubWord(inWord[1]);
     temp[2] = SubWord(inWord[2]);
     temp[3] = SubWord(inWord[3]);
+}
+
+void shfitRows(HexWord *inWord, HexWord *temp){
+    unsigned char tempHex1, tempHex2, tempHex3;
+    tempHex1 = inWord[0].bytes[1].byte;
+    temp[0].bytes[1].byte = inWord[1].bytes[1].byte;
+    temp[1].bytes[1].byte = inWord[2].bytes[1].byte;
+    temp[2].bytes[1].byte = inWord[3].bytes[1].byte;
+    temp[3].bytes[1].byte = tempHex1;
+
+    tempHex1 = inWord[0].bytes[2].byte;
+    tempHex2 = inWord[1].bytes[2].byte;
+    temp[0].bytes[2].byte = inWord[2].bytes[2].byte;
+    temp[1].bytes[2].byte = inWord[3].bytes[2].byte;
+    temp[2].bytes[2].byte = tempHex1;
+    temp[3].bytes[2].byte = tempHex2;
+
+    tempHex1 = inWord[0].bytes[3].byte;
+    tempHex2 = inWord[1].bytes[3].byte;
+    tempHex2 = inWord[2].bytes[3].byte;
+    temp[0].bytes[3].byte = inWord[3].bytes[3].byte;
+    temp[1].bytes[3].byte = tempHex1;
+    temp[2].bytes[3].byte = tempHex2;
+    temp[3].bytes[3].byte = tempHex3;
 }
 
 int main(){
@@ -188,16 +212,17 @@ int main(){
     }
 
     // Print the Parsed Words
-    for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(SubWord(input[i]));
-    }
+    // for (unsigned char i = 0; i < 4; i++) {
+    //     printHexWord(SubWord(input[i]));
+    // }
 
     HexWord temp1[4];
-    subBytes(input,input);      // Do Like This !!
+    shfitRows(input,temp1);
+    // subBytes(input,input);      // Do Like This !!
     
     // Print the Parsed Words
     for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(input[i]);
+        printHexWord(temp1[i]);
     }
 
     // Print the Key Schedule Output
