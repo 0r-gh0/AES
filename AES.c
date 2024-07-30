@@ -133,12 +133,12 @@ void rowParseHexWords(const char *hexString, HexWord *wordArray, unsigned char l
     }
 }
 
-void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const int sizeNK){
+void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsigned char sizeNK){
     HexWord temp;
-    for(int i = 0; i < sizeNK; i++){
+    for(unsigned char i = 0; i < sizeNK; i++){
         keyScheduling[i] = rowKeyArray[i];
     }
-    for(int i = 4; i < 44; i++){    // Will Change it later for Much more Generalized version
+    for(unsigned char i = 4; i < 44; i++){    // Will Change it later for Much more Generalized version
         temp = keyScheduling[i - 1];
         if(i % sizeNK == 0){
             temp = XOR(SubWord(Rotate(temp)), Rcon(i/sizeNK));
@@ -161,7 +161,7 @@ int main(){
     // const char *key = "603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4"; // Example input string
     // unsigned char keyLen = 64;
 
-    int keyCount = keyLen/8;
+    unsigned char keyCount = keyLen/8;
     HexWord rowKeyArray[keyCount] ;
     HexWord keyScheduling[44] ;
     
@@ -174,7 +174,7 @@ int main(){
     // }
     
     // Print the Key Schedule Output
-    for (int i = 0; i < 44; i++) {
+    for (unsigned char i = 0; i < 44; i++) {
         printf("Round %d :: ", i);
         printHexWord(keyScheduling[i]);
     }
