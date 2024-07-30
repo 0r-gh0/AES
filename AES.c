@@ -154,34 +154,37 @@ void subBytes(const HexWord *inWord, HexWord *temp){
     temp[3] = SubWord(inWord[3]);
 }
 
-void shfitRows(const HexWord *inWord, HexWord *temp){
+void shiftRows(const HexWord *inWord, HexWord *temp){
     unsigned char tempHex1, tempHex2, tempHex3;
+
+    temp[0].bytes[0].byte = inWord[0].bytes[0].byte;
+    temp[1].bytes[0].byte = inWord[1].bytes[0].byte;
+    temp[2].bytes[0].byte = inWord[2].bytes[0].byte;
+    temp[3].bytes[0].byte = inWord[3].bytes[0].byte;
+
     tempHex1 = inWord[0].bytes[1].byte;
-    temp[0].bytes[1].byte = inWord[1].bytes[1].byte;
-    temp[1].bytes[1].byte = inWord[2].bytes[1].byte;
-    temp[2].bytes[1].byte = inWord[3].bytes[1].byte;
-    temp[3].bytes[1].byte = tempHex1;
+    temp[0].bytes[1].byte = (inWord[1].bytes[1].byte);
+    temp[1].bytes[1].byte = (inWord[2].bytes[1].byte);
+    temp[2].bytes[1].byte = (inWord[3].bytes[1].byte);
+    temp[3].bytes[1].byte = (tempHex1);
 
     tempHex1 = inWord[0].bytes[2].byte;
     tempHex2 = inWord[1].bytes[2].byte;
-    temp[0].bytes[2].byte = inWord[2].bytes[2].byte;
-    temp[1].bytes[2].byte = inWord[3].bytes[2].byte;
-    temp[2].bytes[2].byte = tempHex1;
-    temp[3].bytes[2].byte = tempHex2;
+    temp[0].bytes[2].byte = (inWord[2].bytes[2].byte);
+    temp[1].bytes[2].byte = (inWord[3].bytes[2].byte);
+    temp[2].bytes[2].byte = (tempHex1);
+    temp[3].bytes[2].byte = (tempHex2);
 
     tempHex1 = inWord[0].bytes[3].byte;
     tempHex2 = inWord[1].bytes[3].byte;
-    tempHex2 = inWord[2].bytes[3].byte;
-    temp[0].bytes[3].byte = inWord[3].bytes[3].byte;
-    temp[1].bytes[3].byte = tempHex1;
-    temp[2].bytes[3].byte = tempHex2;
-    temp[3].bytes[3].byte = tempHex3;
+    tempHex3 = inWord[2].bytes[3].byte;
+    temp[0].bytes[3].byte = (inWord[3].bytes[3].byte);
+    temp[1].bytes[3].byte = (tempHex1);
+    temp[2].bytes[3].byte = (tempHex2);
+    temp[3].bytes[3].byte = (tempHex3);
 }
 
 int main(){
-
-    // const char *key = "e2fc70d2"; // Short Test Key Stream
-    // unsigned char keyLen = 8;
 
     const char *key = "2b7e151628aed2a6abf7158809cf4f3c"; // Example input string
     unsigned char keyLen = 32;
@@ -195,34 +198,21 @@ int main(){
     // const char *key = "603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4"; // Example input string
     // unsigned char keyLen = 64;
 
-    unsigned char keyCount = keyLen/8;
-    unsigned char inCount = inLen/8;
+    unsigned char keyCount = keyLen/8;      // Not Needed as of now
+    unsigned char inCount = inLen/8;        // Not Needed as of now
 
-    HexWord rowKeyArray[keyCount] ;
-    HexWord input[inCount];
-    HexWord keyScheduling[44] ;
+    HexWord rowKeyArray[keyCount] ;         // Array to store all Initial Keys
+    HexWord keyScheduling[44] ;             // Array to store all Round Keys
+    HexWord input[inCount];                 // Array to store the Input Stream
     
-    // rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string into words
-    // keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm
-    rowParseHexWords(in, input, inLen);           // Parsing the Input String Into Words
+    
+    // rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string and store it into Array
+    // keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the KeySchedule Array
+    rowParseHexWords(in, input, inLen);                // Parsing the Input String Into Words
 
     // Print the Parsed Words
     for (unsigned char i = 0; i < 4; i++) {
         printHexWord(input[i]);
-    }
-
-    // Print the Parsed Words
-    // for (unsigned char i = 0; i < 4; i++) {
-    //     printHexWord(SubWord(input[i]));
-    // }
-
-    HexWord temp1[4];
-    shfitRows(input,temp1);
-    // subBytes(input,input);      // Do Like This !!
-    
-    // Print the Parsed Words
-    for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(temp1[i]);
     }
 
     // Print the Key Schedule Output

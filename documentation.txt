@@ -229,3 +229,60 @@ HexWord temp1[4];
     for (unsigned char i = 0; i < 4; i++) {
         printHexWord(temp1[i]);
     }
+
+    Why Swap Nibble is not working here ??
+
+    void shiftRows(const HexWord *inWord, HexWord *temp){
+    unsigned char tempHex1, tempHex2, tempHex3;
+
+    temp[0].bytes[0].byte = inWord[0].bytes[0].byte;
+    temp[1].bytes[0].byte = inWord[1].bytes[0].byte;
+    temp[2].bytes[0].byte = inWord[2].bytes[0].byte;
+    temp[3].bytes[0].byte = inWord[3].bytes[0].byte;
+
+    tempHex1 = inWord[0].bytes[1].byte;
+    temp[0].bytes[1].byte = (inWord[1].bytes[1].byte);
+    temp[1].bytes[1].byte = (inWord[2].bytes[1].byte);
+    temp[2].bytes[1].byte = (inWord[3].bytes[1].byte);
+    temp[3].bytes[1].byte = (tempHex1);
+    // temp[0].bytes[1].byte = swapNibbles(inWord[1].bytes[1].byte);
+    // temp[1].bytes[1].byte = swapNibbles(inWord[2].bytes[1].byte);
+    // temp[2].bytes[1].byte = swapNibbles(inWord[3].bytes[1].byte);
+    // temp[3].bytes[1].byte = swapNibbles(tempHex1);
+    // printf("%X", tempHex1);
+    // printf("%X", temp[0].bytes[1].byte);
+    // printf("%X%X", tempHex1.nibbles.high, tempHex1.nibbles.low);
+
+    tempHex1 = inWord[0].bytes[2].byte;
+    tempHex2 = inWord[1].bytes[2].byte;
+    temp[0].bytes[2].byte = (inWord[2].bytes[2].byte);
+    temp[1].bytes[2].byte = (inWord[3].bytes[2].byte);
+    temp[2].bytes[2].byte = (tempHex1);
+    temp[3].bytes[2].byte = (tempHex2);
+    // temp[0].bytes[2].byte = swapNibbles(inWord[2].bytes[2].byte);
+    // temp[1].bytes[2].byte = swapNibbles(inWord[3].bytes[2].byte);
+    // temp[2].bytes[2].byte = swapNibbles(tempHex1);
+    // temp[3].bytes[2].byte = swapNibbles(tempHex2);
+
+    tempHex1 = inWord[0].bytes[3].byte;
+    tempHex2 = inWord[1].bytes[3].byte;
+    tempHex3 = inWord[2].bytes[3].byte;
+    temp[0].bytes[3].byte = (inWord[3].bytes[3].byte);
+    temp[1].bytes[3].byte = (tempHex1);
+    temp[2].bytes[3].byte = (tempHex2);
+    temp[3].bytes[3].byte = (tempHex3);
+    // temp[0].bytes[3].byte = swapNibbles(inWord[3].bytes[3].byte);
+    // temp[1].bytes[3].byte = swapNibbles(tempHex1);
+    // temp[2].bytes[3].byte = swapNibbles(tempHex2);
+    // temp[3].bytes[3].byte = swapNibbles(tempHex3);
+
+    // HexWord ARGHA;
+    // ARGHA.bytes[0].byte = swapNibbles(temp[0].bytes[3].byte);
+    // ARGHA.bytes[1].byte = swapNibbles(temp[1].bytes[3].byte);
+    // ARGHA.bytes[2].byte = swapNibbles(temp[2].bytes[3].byte);
+    // ARGHA.bytes[3].byte = swapNibbles(temp[3].bytes[3].byte);
+    // printHexWord(ARGHA);
+
+     HexWord temp1[4];
+    shitRows(input,temp1);
+    // subBytes(input,input);      // Do Like This !!
