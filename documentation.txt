@@ -213,3 +213,19 @@ Round 42 :: E13F0CC8
 Round 43 :: B6630CA6
 
 
+SUBWords running 
+
+void subBytes(const HexWord *inWord, HexWord *temp){
+    temp[0] = SubWord(inWord[0]);
+    temp[1] = SubWord(inWord[1]);
+    temp[2] = SubWord(inWord[2]);
+    temp[3] = SubWord(inWord[3]);
+}
+
+HexWord temp1[4];
+    subBytes(input,temp1);
+    
+    // Print the Parsed Words
+    for (unsigned char i = 0; i < 4; i++) {
+        printHexWord(temp1[i]);
+    }

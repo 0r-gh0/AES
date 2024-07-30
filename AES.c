@@ -147,10 +147,12 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
     }
 }
 
-// HexWord subBytes(HexWord inWord){
-//     HexWord temp[4];
-//     temp[0] = inWord[0];
-// }
+void subBytes(const HexWord *inWord, HexWord *temp){
+    temp[0] = SubWord(inWord[0]);
+    temp[1] = SubWord(inWord[1]);
+    temp[2] = SubWord(inWord[2]);
+    temp[3] = SubWord(inWord[3]);
+}
 
 int main(){
 
@@ -184,7 +186,20 @@ int main(){
     for (unsigned char i = 0; i < 4; i++) {
         printHexWord(input[i]);
     }
+
+    // Print the Parsed Words
+    for (unsigned char i = 0; i < 4; i++) {
+        printHexWord(SubWord(input[i]));
+    }
+
+    HexWord temp1[4];
+    subBytes(input,temp1);
     
+    // Print the Parsed Words
+    for (unsigned char i = 0; i < 4; i++) {
+        printHexWord(temp1[i]);
+    }
+
     // Print the Key Schedule Output
     // for (unsigned char i = 0; i < 44; i++) {
     //     printf("Round %d :: ", i);
