@@ -193,11 +193,11 @@ int main(){
     }
 
     HexWord temp1[4];
-    subBytes(input,temp1);
+    subBytes(input,input);      // Do Like This !!
     
     // Print the Parsed Words
     for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(temp1[i]);
+        printHexWord(input[i]);
     }
 
     // Print the Key Schedule Output
