@@ -286,3 +286,20 @@ HexWord temp1[4];
      HexWord temp1[4];
     shitRows(input,temp1);
     // subBytes(input,input);      // Do Like This !!
+    
+
+    Changed to this to make it more less power and space consuming 
+    and to reduce the function overhead
+
+    // Performing SubWord and Storing it in temp
+void subBytes(const HexWord *A, HexWord *temp){
+    for(unsigned char i = 0; i < 4; i++){
+        for(unsigned char j = 0; j < 4; j++){
+            temp[i].bytes[j].byte = swapNibbles(sBox[((int)A[i].bytes[j].nibbles.high) * 16 + ((int)A[i].bytes[j].nibbles.low)]);
+        }
+    }
+    // temp[0] = SubWord(A[0]);
+    // temp[1] = SubWord(A[1]);
+    // temp[2] = SubWord(A[2]);
+    // temp[3] = SubWord(A[3]);
+}

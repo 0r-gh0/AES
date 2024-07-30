@@ -147,13 +147,25 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
     }
 }
 
-void subBytes(const HexWord *inWord, HexWord *temp){
-    temp[0] = SubWord(inWord[0]);
-    temp[1] = SubWord(inWord[1]);
-    temp[2] = SubWord(inWord[2]);
-    temp[3] = SubWord(inWord[3]);
+//Xoring 2 Words and then storing it in temp
+void wordXOR(const HexWord *A, const HexWord *B, HexWord *temp){
+    for(unsigned char i = 0; i < 4; i++){
+        for(unsigned char j = 0; j < 4; j++){
+            temp[i].bytes[j].byte = A[i].bytes[j].byte ^ B[i].bytes[j].byte;
+        }
+    }
 }
 
+// Performing SubWord and Storing it in temp
+void subBytes(const HexWord *A, HexWord *temp){
+    for(unsigned char i = 0; i < 4; i++){
+        for(unsigned char j = 0; j < 4; j++){
+            temp[i].bytes[j].byte = swapNibbles(sBox[((int)A[i].bytes[j].nibbles.high) * 16 + ((int)A[i].bytes[j].nibbles.low)]);
+        }
+    }
+}
+
+// Shifting Rowise and Storing it in temp
 void shiftRows(const HexWord *inWord, HexWord *temp){
     unsigned char tempHex1, tempHex2, tempHex3;
 
@@ -210,9 +222,15 @@ int main(){
     // keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the KeySchedule Array
     rowParseHexWords(in, input, inLen);                // Parsing the Input String Into Words
 
-    // Print the Parsed Words
     for (unsigned char i = 0; i < 4; i++) {
         printHexWord(input[i]);
+    }
+
+    HexWord temp1[4];
+    subBytes(input, temp1);
+    // Print the Parsed Words
+    for (unsigned char i = 0; i < 4; i++) {
+        printHexWord(temp1[i]);
     }
 
     // Print the Key Schedule Output
