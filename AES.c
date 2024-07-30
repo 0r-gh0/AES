@@ -220,17 +220,10 @@ int main(){
     
     // rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string and store it into Array
     // keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the KeySchedule Array
-    rowParseHexWords(in, input, inLen);                // Parsing the Input String Into Words
+    rowParseHexWords(in, input, inLen);                // Parse the Input String and store it into Word
 
     for (unsigned char i = 0; i < 4; i++) {
         printHexWord(input[i]);
-    }
-
-    HexWord temp1[4];
-    subBytes(input, temp1);
-    // Print the Parsed Words
-    for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(temp1[i]);
     }
 
     // Print the Key Schedule Output
