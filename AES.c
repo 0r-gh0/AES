@@ -128,6 +128,27 @@ HexByte leftShift(HexByte A, unsigned char i){
     return temp;
 }
 
+//Right Shift a byte till k (k<8) Bits
+HexByte rightShift(HexByte A, unsigned char i){
+    HexByte temp;
+    for(unsigned char j = 1; j <= i; j++){
+        // Check : A.nibbles.High's LSB is 1 => Shift that bit to MSB of A.nibbles.Low 
+        if ( !((A.nibbles.high & 0x1) ^ 0x1) ){  // '&' with 0x1 To Check if it's MSB is 1
+            // '^' with 0x1 to Check LHS = RHS => 0! = 1 and Enters the If Block
+            temp.nibbles.low = (A.nibbles.low >> 1) ^ 0x8;    // '^' with 1 to add the removed Bit from low's MSB
+        }
+        else{
+            // High's LSB is NOT 1 so addition is not needed
+            temp.nibbles.low = (A.nibbles.low >> 1);
+        }
+        temp.nibbles.high = A.nibbles.high >> 1;
+
+        A.nibbles.low = temp.nibbles.low;
+        A.nibbles.high = temp.nibbles.high;
+    }
+    return temp;
+}
+
 // Convert each parsed Character to Byte
 unsigned char hexCharToByte(char hex) {
     if (hex >= '0' && hex <= '9') {
@@ -263,7 +284,7 @@ int main(){
 
     // t.nibbles.high = t.nibbles.low & 0x8;
 
-    k = leftShift(t,5);
+    k = rightShift(t,3);
 
     // t.nibbles.high = t.nibbles.high << 1;
     // t.nibbles.low = t.nibbles.low << 1;
