@@ -278,18 +278,5 @@ int main(){
 
     */
 
-    HexByte t,k;
-    t.nibbles.high = 0xC;
-    t.nibbles.low = 0xD;
-
-    // t.nibbles.high = t.nibbles.low & 0x8;
-
-    k = rightShift(t,3);
-
-    // t.nibbles.high = t.nibbles.high << 1;
-    // t.nibbles.low = t.nibbles.low << 1;
-
-    printf("%X%X",k.nibbles.high, k.nibbles.low);
-
     return 0;
 }

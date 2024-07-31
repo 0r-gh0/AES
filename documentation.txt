@@ -372,4 +372,8 @@ HexByte t,k;
 
     k = rightShift(t,3);
 
+    Define Like this 
 
+    HexByte t,k;
+    t.nibbles.high = 0xC;
+    t.nibbles.low = 0xD;
