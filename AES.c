@@ -107,6 +107,27 @@ HexWord Rcon(unsigned char k){
     return temp;
 }
 
+//Left Shift a byte till k (k<8) Bits
+HexByte leftShift(HexByte A, unsigned char i){
+    HexByte temp;
+    for(unsigned char j = 1; j <= i; j++){
+        // Check : A.nibbles.Low's MSB is 1 => Shift that bit to LSB of A.nibbles.High 
+        if ( !((A.nibbles.low & 0x8) ^ 0x8) ){  // '&' with 0x8 To Check if it's MSB is 1
+            // '^' with 0x8 to Check LHS = RHS => 0! = 1 and Enters the If Block
+            temp.nibbles.high = (A.nibbles.high << 1) ^ 0x1;    // '^' with 1 to add the removed Bit from low's MSB
+        }
+        else{
+            // low's MSB is NOT 1 so addition is not needed
+            temp.nibbles.high = (A.nibbles.high << 1);
+        }
+        temp.nibbles.low = A.nibbles.low << 1;
+
+        A.nibbles.low = temp.nibbles.low;
+        A.nibbles.high = temp.nibbles.high;
+    }
+    return temp;
+}
+
 // Convert each parsed Character to Byte
 unsigned char hexCharToByte(char hex) {
     if (hex >= '0' && hex <= '9') {
@@ -210,6 +231,8 @@ int main(){
     // const char *key = "603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4"; // Example input string
     // unsigned char keyLen = 64;
 
+    /*
+    
     unsigned char keyCount = keyLen/8;      // Not Needed as of now
     unsigned char inCount = inLen/8;        // Not Needed as of now
 
@@ -231,6 +254,21 @@ int main(){
     //     printf("Round %d :: ", i);
     //     printHexWord(keyScheduling[i]);
     // }
+
+    */
+
+    HexByte t,k;
+    t.nibbles.high = 0xC;
+    t.nibbles.low = 0xD;
+
+    // t.nibbles.high = t.nibbles.low & 0x8;
+
+    k = leftShift(t,5);
+
+    // t.nibbles.high = t.nibbles.high << 1;
+    // t.nibbles.low = t.nibbles.low << 1;
+
+    printf("%X%X",k.nibbles.high, k.nibbles.low);
 
     return 0;
 }
