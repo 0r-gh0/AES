@@ -238,6 +238,29 @@ void shiftRows(const HexWord *inWord, HexWord *temp){
     temp[3].bytes[3].byte = (tempHex3);
 }
 
+// To Perform the Galois Multiplication of 2^8
+HexByte galoisMul(const HexByte A, const HexByte B) {
+	HexByte p, temp_A = A, temp_B = B;
+    p.nibbles.high = 0x0;
+    p.nibbles.low = 0x0;          // Accumulator for the product of the multiplication
+	while ((temp_A.nibbles.low != 0x0 || temp_A.nibbles.high != 0x0) && (temp_B.nibbles.low != 0x0 || temp_B.nibbles.high != 0x0)) {        // To Check Whether a != 0 && b != 0
+        if (temp_B.nibbles.low & 0x1){ // if the polynomial for b has a constant term, add the corresponding a to p
+            p.nibbles.low ^= temp_A.nibbles.low; // addition in GF(2^m) is an XOR of the polynomial coefficients
+            p.nibbles.high ^= temp_A.nibbles.high;
+        }
+        if (temp_A.nibbles.high & 0x8){ // GF modulo: if a has a nonzero term x^7, then must be reduced when it becomes x^8
+            temp_A = leftShift(temp_A, 1);
+            temp_A.nibbles.high = temp_A.nibbles.high ^ 0x1;
+            temp_A.nibbles.low = temp_A.nibbles.low ^ 0xb;
+            } // Subtract (XOR) the primitive polynomial x^8 + x^4 + x^3 + x + 1 (0b1_0001_1011) – you can change it but it must be irreducible 
+        else{
+            temp_A = leftShift(temp_A, 1);      // Equivalent to a*x
+        }
+        temp_B = rightShift(temp_B, 1);
+	}
+	return p;
+}
+
 int main(){
 
     const char *key = "2b7e151628aed2a6abf7158809cf4f3c"; // Example input string
