@@ -263,18 +263,36 @@ HexByte galoisMul(const HexByte A, const HexByte B) {
 
 // To Perform MixColumns
 void MixColumns(const HexWord *A, HexWord *temp){
-    HexByte val, temp_02, temp_03;
+    HexByte val, temp_02, temp_03, temp_02_galoisMul, temp_03_galoisMul;
     temp_02.nibbles.high = 0x0;
     temp_02.nibbles.low = 0x2;      // Argument of type "int" is incompatible with parameter of type "const HexByte"C 
     temp_03.nibbles.high = 0x0;
     temp_03.nibbles.low = 0x3;
-    for (int i = 0; i < 4; i++){
-        val = (galoisMul(temp_02, A[i].bytes[0])) ^ (galoisMul(temp_02, A[i].bytes[0]));
 
-        temp[i].bytes[0].byte = temp
-        temp[i].bytes[1].byte = swapNibbles(sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)]);
-        temp[i].bytes[2].byte = swapNibbles(sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)]);
-        temp[i].bytes[3].byte = swapNibbles(sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)]);
+    for (int i = 0; i < 4; i++){
+        temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[0]);
+        temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[1]);
+        val.nibbles.low = (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low ^ A[i].bytes[2].nibbles.low ^ A[i].bytes[3].nibbles.low;
+        val.nibbles.high = (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high ^ A[i].bytes[2].nibbles.high ^ A[i].bytes[3].nibbles.high;
+        temp[i].bytes[0] = val;
+
+        temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[1]);
+        temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[2]);
+        val.nibbles.low = A[i].bytes[0].nibbles.low ^ (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low ^ A[i].bytes[3].nibbles.low;
+        val.nibbles.high = A[i].bytes[0].nibbles.high ^ (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high ^ A[i].bytes[3].nibbles.high;
+        temp[i].bytes[1] = val;
+
+        temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[2]);
+        temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[3]);
+        val.nibbles.low = A[i].bytes[0].nibbles.low ^ A[i].bytes[1].nibbles.low ^ (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low;
+        val.nibbles.high = A[i].bytes[0].nibbles.high ^ A[i].bytes[1].nibbles.high ^ (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high;
+        temp[i].bytes[2] = val;
+
+        temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[3]);
+        temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[0]);
+        val.nibbles.low = (temp_03_galoisMul).nibbles.low ^ A[i].bytes[1].nibbles.low ^ A[i].bytes[2].nibbles.low ^ (temp_02_galoisMul).nibbles.low;
+        val.nibbles.high = (temp_03_galoisMul).nibbles.high ^ A[i].bytes[1].nibbles.high ^ A[i].bytes[2].nibbles.high ^ (temp_02_galoisMul).nibbles.high;
+        temp[i].bytes[3] = val;
     }
 }
 
@@ -317,6 +335,14 @@ int main(){
     // }
 
     */
+
+    HexByte val, temp_02, temp_03;
+    temp_02.nibbles.high = 0x0;
+    temp_02.nibbles.low = 0x2;      // Argument of type "int" is incompatible with parameter of type "const HexByte"C 
+    temp_03.nibbles.high = 0x0;
+    temp_03.nibbles.low = 0x3;
+
+    val.nibbles.low = temp_02.nibbles.low ^ temp_03.nibbles.low;
 
     return 0;
 }
