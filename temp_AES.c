@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 /*
  * Emit the sbox as volatile const to prevent the compiler from doing
@@ -296,21 +297,58 @@ void MixColumns(const HexWord *A, HexWord *temp){
     }
 }
 
+// To perform the Encryption
+void Encrypt(const HexWord *in, const HexWord *key, HexWord *out){
+    HexWord state[4], word_key[4];
+    unsigned char Nr = 10;
+
+    word_key[0] = key[0];
+    word_key[1] = key[1];
+    word_key[2] = key[2]; 
+    word_key[3] = key[3];
+
+    wordXOR(in, word_key, state);
+
+    for(unsigned char i = 1; i < Nr; i++){
+        subBytes(state, out);
+        shiftRows(out, state);
+        MixColumns(state, out);
+    
+        word_key[0] = key[4 * i];
+        word_key[1] = key[4 * i + 1];
+        word_key[2] = key[4 * i + 2]; 
+        word_key[3] = key[4 * i + 3];  
+
+        wordXOR(out, word_key, state); 
+    }
+
+    subBytes(state, out);
+    shiftRows(out, state);   
+
+    word_key[0] = key[40];
+    word_key[1] = key[41];
+    word_key[2] = key[42]; 
+    word_key[3] = key[43];
+
+    wordXOR(state, word_key, out);
+}
+
 int main(){
 
-    const char *key = "2b7e151628aed2a6abf7158809cf4f3c"; // Example input string
+    const char *key = "2b7e151628aed2a6abf7158809cf4f3c";   // Example key string
     unsigned char keyLen = 32;
 
-    const char *in = "3243f6a8885a308d313198a2e0370734"; 
+    const char *in = "3243f6a8885a308d313198a2e0370734";    // Example input string
     unsigned char inLen = 32;
+
+    // const char *in = "d4bf5d30e0b452aeb84111f11e2798e5"; 
+    // unsigned char inLen = 32;
 
     // const char *key = "8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b"; // Example input string
     // unsigned char keyLen = 48;
 
     // const char *key = "603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4"; // Example input string
     // unsigned char keyLen = 64;
-
-    /*
     
     unsigned char keyCount = keyLen/8;      // Not Needed as of now
     unsigned char inCount = inLen/8;        // Not Needed as of now
@@ -318,31 +356,40 @@ int main(){
     HexWord rowKeyArray[keyCount] ;         // Array to store all Initial Keys
     HexWord keyScheduling[44] ;             // Array to store all Round Keys
     HexWord input[inCount];                 // Array to store the Input Stream
+    HexWord output[inCount];                 // Array to store the Output Stream
     
-    
-    // rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string and store it into Array
-    // keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the KeySchedule Array
+    rowParseHexWords(key, rowKeyArray, keyLen);     // Parse the hex string and store it into Array
+    keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the KeySchedule Array
     rowParseHexWords(in, input, inLen);                // Parse the Input String and store it into Word
 
+    printf("~ Input ~\n");
     for (unsigned char i = 0; i < 4; i++) {
         printHexWord(input[i]);
     }
 
-    // Print the Key Schedule Output
-    // for (unsigned char i = 0; i < 44; i++) {
-    //     printf("Round %d :: ", i);
-    //     printHexWord(keyScheduling[i]);
+    // The Key Scheduling Output
+    printf("\n~ Key Scheduling ~ \n");
+    for (unsigned char i = 0; i < 44; i++) {
+        printf("Round %d :: ", i);
+        printHexWord(keyScheduling[i]);
+    }
+
+    printf("\n~ Encryption ~\n");
+
+    clock_t start, end;
+
+    double average = 0.0;
+
+    for(int i = 0; i < 1000; i++){
+    start = clock();
+    Encrypt(input, keyScheduling, output);
+    end = clock();
+    double total_t = (double)(end - start) / CLOCKS_PER_SEC;
+    average += (total_t);
+    printf("Total time taken by CPU: %f\n", total_t); }
+    // for (unsigned char i = 0; i < 4; i++) {
+    //     printHexWord(output[i]);
     // }
-
-    */
-
-    HexByte val, temp_02, temp_03;
-    temp_02.nibbles.high = 0x0;
-    temp_02.nibbles.low = 0x2;      // Argument of type "int" is incompatible with parameter of type "const HexByte"C 
-    temp_03.nibbles.high = 0x0;
-    temp_03.nibbles.low = 0x3;
-
-    val.nibbles.low = temp_02.nibbles.low ^ temp_03.nibbles.low;
-
+    printf("Total time taken by CPU: %f\n", average);
     return 0;
 }
