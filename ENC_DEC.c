@@ -379,10 +379,10 @@ void InvMixColumns(const HexWord *A, HexWord *temp){
     temp_0d.nibbles.high = 0x0;
     temp_0e.nibbles.high = 0x0;
 
-    temp_09.nibbles.high = 0x9;
-    temp_0b.nibbles.high = 0xb;
-    temp_0d.nibbles.high = 0xd;
-    temp_0e.nibbles.high = 0xe;
+    temp_09.nibbles.low = 0x9;
+    temp_0b.nibbles.low = 0xb;
+    temp_0d.nibbles.low = 0xd;
+    temp_0e.nibbles.low = 0xe;
 
     for (int i = 0; i < 4; i++){
         temp_09_galoisMul = galoisMul(temp_09, A[i].bytes[3]);
@@ -391,14 +391,13 @@ void InvMixColumns(const HexWord *A, HexWord *temp){
         temp_0e_galoisMul = galoisMul(temp_0e, A[i].bytes[0]);
         temp[i].bytes[0].nibbles.low = temp_09_galoisMul.nibbles.low ^ temp_0b_galoisMul.nibbles.low ^ temp_0d_galoisMul.nibbles.low ^ temp_0e_galoisMul.nibbles.low;
         temp[i].bytes[0].nibbles.high = temp_09_galoisMul.nibbles.high ^ temp_0b_galoisMul.nibbles.high ^ temp_0d_galoisMul.nibbles.high ^ temp_0e_galoisMul.nibbles.high;
-        printf("%x%x <-- %x%x\n",temp[i].bytes[0].nibbles.high,temp[i].bytes[0].nibbles.low,A[i].bytes[0].nibbles.high, A[i].bytes[0].nibbles.low);
+        
         temp_09_galoisMul = galoisMul(temp_09, A[i].bytes[0]);
         temp_0b_galoisMul = galoisMul(temp_0b, A[i].bytes[2]);
         temp_0d_galoisMul = galoisMul(temp_0d, A[i].bytes[3]);
         temp_0e_galoisMul = galoisMul(temp_0e, A[i].bytes[1]);
         temp[i].bytes[1].nibbles.low = temp_09_galoisMul.nibbles.low ^ temp_0b_galoisMul.nibbles.low ^ temp_0d_galoisMul.nibbles.low ^ temp_0e_galoisMul.nibbles.low;
         temp[i].bytes[1].nibbles.high = temp_09_galoisMul.nibbles.high ^ temp_0b_galoisMul.nibbles.high ^ temp_0d_galoisMul.nibbles.high ^ temp_0e_galoisMul.nibbles.high;
-        printf("%x%x <-- %x%x\n",temp[i].bytes[1].nibbles.high,temp[i].bytes[1].nibbles.low,A[i].bytes[1].nibbles.high, A[i].bytes[1].nibbles.low);
 
         temp_09_galoisMul = galoisMul(temp_09, A[i].bytes[1]);
         temp_0b_galoisMul = galoisMul(temp_0b, A[i].bytes[3]);
@@ -406,7 +405,6 @@ void InvMixColumns(const HexWord *A, HexWord *temp){
         temp_0e_galoisMul = galoisMul(temp_0e, A[i].bytes[2]);
         temp[i].bytes[2].nibbles.low = temp_09_galoisMul.nibbles.low ^ temp_0b_galoisMul.nibbles.low ^ temp_0d_galoisMul.nibbles.low ^ temp_0e_galoisMul.nibbles.low;
         temp[i].bytes[2].nibbles.high = temp_09_galoisMul.nibbles.high ^ temp_0b_galoisMul.nibbles.high ^ temp_0d_galoisMul.nibbles.high ^ temp_0e_galoisMul.nibbles.high;
-        printf("%x%x <-- %x%x\n",temp[i].bytes[2].nibbles.high,temp[i].bytes[2].nibbles.low,A[i].bytes[2].nibbles.high, A[i].bytes[2].nibbles.low);
 
         temp_09_galoisMul = galoisMul(temp_09, A[i].bytes[2]);
         temp_0b_galoisMul = galoisMul(temp_0b, A[i].bytes[0]);
@@ -414,8 +412,6 @@ void InvMixColumns(const HexWord *A, HexWord *temp){
         temp_0e_galoisMul = galoisMul(temp_0e, A[i].bytes[3]);
         temp[i].bytes[3].nibbles.low = temp_09_galoisMul.nibbles.low ^ temp_0b_galoisMul.nibbles.low ^ temp_0d_galoisMul.nibbles.low ^ temp_0e_galoisMul.nibbles.low;
         temp[i].bytes[3].nibbles.high = temp_09_galoisMul.nibbles.high ^ temp_0b_galoisMul.nibbles.high ^ temp_0d_galoisMul.nibbles.high ^ temp_0e_galoisMul.nibbles.high;
-        printf("%x%x <-- %x%x\n",temp[i].bytes[3].nibbles.high,temp[i].bytes[3].nibbles.low,A[i].bytes[3].nibbles.high, A[i].bytes[3].nibbles.low);
-
     }
 }
 
@@ -478,9 +474,6 @@ void Decrypt(const HexWord *in, const HexWord *key, HexWord *out){
 
         wordXOR(state, word_key, out);
         InvMixColumns(out, state);
-                        for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(state[i]);
-    }
     }
 
     InvShiftRows(state, out);
