@@ -5,7 +5,7 @@
  * constant folding on sbox references involving fixed indexes.
  */
 
-static volatile const unsigned char sBox[256] = {
+volatile const unsigned char sBox[256] = {
 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
 	0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
@@ -40,7 +40,7 @@ static volatile const unsigned char sBox[256] = {
 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
 };
 
-static volatile const unsigned char InvSBox[256] = {
+volatile const unsigned char InvSBox[256] = {
 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
 	0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
 	0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
@@ -492,11 +492,11 @@ int main(){
     HexWord in[4];
     HexByte argha;
 
-    FILE *iFile, *oFile;
-    unsigned char buff[16];
+    FILE *iFile, *oFile, *tempFile;
+    unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16];
 
     char read_block;
-    iFile = fopen("hi.txt","rb");
+    iFile = fopen("temp.txt","rb");
     oFile = fopen("encrypt","wb");
 
     if (iFile == NULL || oFile == NULL){
@@ -507,8 +507,6 @@ int main(){
     // const char *key = "2b7e151628aed2a6abf7158809cf4f3c";   // Example key string
     const char *key = "59454c4c4f57205355424d4152494e45";   // Example key string
     unsigned char keyLen = 32;
-
-
 
     // const char *in = "3243f6a8885a308d313198a2e0370734";    // Example input string
     unsigned char inLen = 32;
@@ -547,8 +545,7 @@ int main(){
     }
 
     printf("\n~ Encryption ~\n");
-
-    while (fread(buff, 1, 16, iFile) == 16 )
+    while ( (byteRead = fread(buff, 1, 16, iFile)) == 16 )
     {
         in[0].bytes[0].nibbles.low = buff[0];
         in[0].bytes[0].nibbles.high = buff[0] >> 4;
@@ -587,18 +584,38 @@ int main(){
         in[3].bytes[3].nibbles.high = buff[15] >> 4;
 
         Encrypt(in, keyScheduling, output);
-
         for (unsigned char i = 0; i < 4; i++) {
             printHexWord(output[i]);
         }
     }
 
+    while(tempCounter < byteRead ){
+        if(temp_j == 4){temp_j = 0; temp_i++;}
+        in[temp_i].bytes[temp_j].nibbles.low = buff[tempCounter];
+        in[temp_i].bytes[temp_j].nibbles.high = buff[tempCounter] >> 4;
+        temp_j++;
+        tempCounter++;
+    }    
 
-    printf("\n~ Decryption ~\n");
-    Decrypt(output, keyScheduling, dec);
-    for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(dec[i]);
+    pad = 16 - byteRead;
+    unsigned char t_run = byteRead;
+
+    while(t_run < 16){
+        in[t_run/4].bytes[t_run%4].nibbles.low = pad;
+        in[t_run/4].bytes[t_run%4].nibbles.high = pad >> 4;
+        t_run++;
     }
+
+    Encrypt(in, keyScheduling, output);
+    for (unsigned char i = 0; i < 4; i++) {
+            printHexWord(output[i]);
+    }
+
+    // printf("\n~ Decryption ~\n");
+    // Decrypt(output, keyScheduling, dec);
+    // for (unsigned char i = 0; i < 4; i++) {
+    //     printHexWord(dec[i]);
+    // }
 
     return 0;
 }
