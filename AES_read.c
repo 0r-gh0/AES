@@ -539,10 +539,10 @@ int main(){
 
     // The Key Scheduling Output
     printf("\n~ Key Scheduling ~ \n");
-    for (unsigned char i = 0; i < 44; i++) {
-        printf("Round %d :: ", i);
-        printHexWord(keyScheduling[i]);
-    }
+    // for (unsigned char i = 0; i < 44; i++) {
+    //     printf("Round %d :: ", i);
+    //     printHexWord(keyScheduling[i]);
+    // }
 
     printf("\n~ Encryption ~\n");
     while ( (byteRead = fread(buff, 1, 16, iFile)) == 16 )
@@ -584,9 +584,9 @@ int main(){
         in[3].bytes[3].nibbles.high = buff[15] >> 4;
 
         Encrypt(in, keyScheduling, output);
-        for (unsigned char i = 0; i < 4; i++) {
-            printHexWord(output[i]);
-        }
+        // for (unsigned char i = 0; i < 4; i++) {
+        //     printHexWord(output[i]);
+        // }
     }
 
     while(tempCounter < byteRead ){
@@ -607,9 +607,9 @@ int main(){
     }
 
     Encrypt(in, keyScheduling, output);
-    for (unsigned char i = 0; i < 4; i++) {
-            printHexWord(output[i]);
-    }
+    // for (unsigned char i = 0; i < 4; i++) {
+    //         printHexWord(output[i]);
+    // }
 
     // printf("\n~ Decryption ~\n");
     // Decrypt(output, keyScheduling, dec);
