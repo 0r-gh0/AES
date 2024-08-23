@@ -125,10 +125,32 @@ unsigned char swapNibbles(unsigned char byte) {
 // To Perform Substitution
 HexWord SubWord(const HexWord A){
     HexWord temp;   // Check this about Little-Endienness
-    temp.bytes[0].byte = swapNibbles(sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)]);
-    temp.bytes[1].byte = swapNibbles(sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)]);
-    temp.bytes[2].byte = swapNibbles(sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)]);
-    temp.bytes[3].byte = swapNibbles(sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)]);
+    unsigned char t0, t1, t2, t3;
+
+    t0 = sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)];
+    t1 = sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)];
+    t2 = sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)];
+    t3 = sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)];
+
+    temp.bytes[0].nibbles.low = t0;
+    temp.bytes[0].nibbles.high = t0 >> 4;
+
+    temp.bytes[1].nibbles.low = t1;
+    temp.bytes[1].nibbles.high = t1 >> 4;
+    
+    temp.bytes[2].nibbles.low = t2;
+    temp.bytes[2].nibbles.high = t2 >> 4;
+
+    temp.bytes[3].nibbles.low = t3;
+    temp.bytes[3].nibbles.high = t3 >> 4;
+
+    printf("HELLO");
+
+    // temp.bytes[0].byte = swapNibbles(sBox[((int)A.bytes[0].nibbles.high) * 16 + ((int)A.bytes[0].nibbles.low)]);
+    // temp.bytes[1].byte = swapNibbles(sBox[((int)A.bytes[1].nibbles.high) * 16 + ((int)A.bytes[1].nibbles.low)]);
+    // temp.bytes[2].byte = swapNibbles(sBox[((int)A.bytes[2].nibbles.high) * 16 + ((int)A.bytes[2].nibbles.low)]);
+    // temp.bytes[3].byte = swapNibbles(sBox[((int)A.bytes[3].nibbles.high) * 16 + ((int)A.bytes[3].nibbles.low)]);
+
     return temp;
 }
 
@@ -226,11 +248,25 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
 
 //Xoring 2 Words and then storing it in temp
 void wordXOR(HexWord *A, HexWord *B){
-    for(unsigned char i = 0; i < 4; i++){
-        for(unsigned char j = 0; j < 4; j++){
-            A[i].bytes[j].byte = A[i].bytes[j].byte ^ B[i].bytes[j].byte;
-        }
-    }
+    A[0].bytes[0].byte = A[0].bytes[0].byte ^ B[0].bytes[0].byte;
+    A[0].bytes[1].byte = A[0].bytes[1].byte ^ B[0].bytes[1].byte;
+    A[0].bytes[2].byte = A[0].bytes[2].byte ^ B[0].bytes[2].byte;
+    A[0].bytes[3].byte = A[0].bytes[3].byte ^ B[0].bytes[3].byte;
+
+    A[1].bytes[0].byte = A[1].bytes[0].byte ^ B[1].bytes[0].byte;
+    A[1].bytes[1].byte = A[1].bytes[1].byte ^ B[1].bytes[1].byte;
+    A[1].bytes[2].byte = A[1].bytes[2].byte ^ B[1].bytes[2].byte;
+    A[1].bytes[3].byte = A[1].bytes[3].byte ^ B[1].bytes[3].byte;
+
+    A[2].bytes[0].byte = A[2].bytes[0].byte ^ B[2].bytes[0].byte;
+    A[2].bytes[1].byte = A[2].bytes[1].byte ^ B[2].bytes[1].byte;
+    A[2].bytes[2].byte = A[2].bytes[2].byte ^ B[2].bytes[2].byte;
+    A[2].bytes[3].byte = A[2].bytes[3].byte ^ B[2].bytes[3].byte;
+
+    A[3].bytes[0].byte = A[3].bytes[0].byte ^ B[3].bytes[0].byte;
+    A[3].bytes[1].byte = A[3].bytes[1].byte ^ B[3].bytes[1].byte;
+    A[3].bytes[2].byte = A[3].bytes[2].byte ^ B[3].bytes[2].byte;
+    A[3].bytes[3].byte = A[3].bytes[3].byte ^ B[3].bytes[3].byte;
 }
 
 // Performing SubWord and Storing it in temp
@@ -533,64 +569,72 @@ int main(){
     keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the KeySchedule Array
 
     printf("\n~ Encryption ~\n");
-    while ( (byteRead = fread(buff, 1, 16, iFile)) == 16 )
-    {
-        in[0].bytes[0].nibbles.low = buff[0];
-        in[0].bytes[0].nibbles.high = buff[0] >> 4;
-        in[0].bytes[1].nibbles.low = buff[1];
-        in[0].bytes[1].nibbles.high = buff[1] >> 4;
-        in[0].bytes[2].nibbles.low = buff[2];
-        in[0].bytes[2].nibbles.high = buff[2] >> 4;
-        in[0].bytes[3].nibbles.low = buff[3];
-        in[0].bytes[3].nibbles.high = buff[3] >> 4;
+    // while ( (byteRead = fread(buff, 1, 16, iFile)) == 16 )
+    // {
+    //     in[0].bytes[0].nibbles.low = buff[0];
+    //     in[0].bytes[0].nibbles.high = buff[0] >> 4;
+    //     in[0].bytes[1].nibbles.low = buff[1];
+    //     in[0].bytes[1].nibbles.high = buff[1] >> 4;
+    //     in[0].bytes[2].nibbles.low = buff[2];
+    //     in[0].bytes[2].nibbles.high = buff[2] >> 4;
+    //     in[0].bytes[3].nibbles.low = buff[3];
+    //     in[0].bytes[3].nibbles.high = buff[3] >> 4;
 
-        in[1].bytes[0].nibbles.low = buff[4];
-        in[1].bytes[0].nibbles.high = buff[4] >> 4;
-        in[1].bytes[1].nibbles.low = buff[5];
-        in[1].bytes[1].nibbles.high = buff[5] >> 4;
-        in[1].bytes[2].nibbles.low = buff[6];
-        in[1].bytes[2].nibbles.high = buff[6] >> 4;
-        in[1].bytes[3].nibbles.low = buff[7];
-        in[1].bytes[3].nibbles.high = buff[7] >> 4;
+    //     in[1].bytes[0].nibbles.low = buff[4];
+    //     in[1].bytes[0].nibbles.high = buff[4] >> 4;
+    //     in[1].bytes[1].nibbles.low = buff[5];
+    //     in[1].bytes[1].nibbles.high = buff[5] >> 4;
+    //     in[1].bytes[2].nibbles.low = buff[6];
+    //     in[1].bytes[2].nibbles.high = buff[6] >> 4;
+    //     in[1].bytes[3].nibbles.low = buff[7];
+    //     in[1].bytes[3].nibbles.high = buff[7] >> 4;
 
-        in[2].bytes[0].nibbles.low = buff[8];
-        in[2].bytes[0].nibbles.high = buff[8] >> 4;
-        in[2].bytes[1].nibbles.low = buff[9];
-        in[2].bytes[1].nibbles.high = buff[9] >> 4;
-        in[2].bytes[2].nibbles.low = buff[10];
-        in[2].bytes[2].nibbles.high = buff[10] >> 4;
-        in[2].bytes[3].nibbles.low = buff[11];
-        in[2].bytes[3].nibbles.high = buff[11] >> 4;
+    //     in[2].bytes[0].nibbles.low = buff[8];
+    //     in[2].bytes[0].nibbles.high = buff[8] >> 4;
+    //     in[2].bytes[1].nibbles.low = buff[9];
+    //     in[2].bytes[1].nibbles.high = buff[9] >> 4;
+    //     in[2].bytes[2].nibbles.low = buff[10];
+    //     in[2].bytes[2].nibbles.high = buff[10] >> 4;
+    //     in[2].bytes[3].nibbles.low = buff[11];
+    //     in[2].bytes[3].nibbles.high = buff[11] >> 4;
 
-        in[3].bytes[0].nibbles.low = buff[12];
-        in[3].bytes[0].nibbles.high = buff[12] >> 4;
-        in[3].bytes[1].nibbles.low = buff[13];
-        in[3].bytes[1].nibbles.high = buff[13] >> 4;
-        in[3].bytes[2].nibbles.low = buff[14];
-        in[3].bytes[2].nibbles.high = buff[14] >> 4;
-        in[3].bytes[3].nibbles.low = buff[15];
-        in[3].bytes[3].nibbles.high = buff[15] >> 4;
+    //     in[3].bytes[0].nibbles.low = buff[12];
+    //     in[3].bytes[0].nibbles.high = buff[12] >> 4;
+    //     in[3].bytes[1].nibbles.low = buff[13];
+    //     in[3].bytes[1].nibbles.high = buff[13] >> 4;
+    //     in[3].bytes[2].nibbles.low = buff[14];
+    //     in[3].bytes[2].nibbles.high = buff[14] >> 4;
+    //     in[3].bytes[3].nibbles.low = buff[15];
+    //     in[3].bytes[3].nibbles.high = buff[15] >> 4;
 
-        Encrypt(in, keyScheduling, output);
-    }
+    //     Encrypt(in, keyScheduling, output);
+    // }
 
-    while(tempCounter < byteRead ){
-        if(temp_j == 4){temp_j = 0; temp_i++;}
-        in[temp_i].bytes[temp_j].nibbles.low = buff[tempCounter];
-        in[temp_i].bytes[temp_j].nibbles.high = buff[tempCounter] >> 4;
-        temp_j++;
-        tempCounter++;
-    }    
+    // while(tempCounter < byteRead ){
+    //     if(temp_j == 4){temp_j = 0; temp_i++;}
+    //     in[temp_i].bytes[temp_j].nibbles.low = buff[tempCounter];
+    //     in[temp_i].bytes[temp_j].nibbles.high = buff[tempCounter] >> 4;
+    //     temp_j++;
+    //     tempCounter++;
+    // }    
 
-    pad = 16 - byteRead;
-    unsigned char t_run = byteRead;
+    // pad = 16 - byteRead;
+    // unsigned char t_run = byteRead;
 
-    while(t_run < 16){
-        in[t_run/4].bytes[t_run%4].nibbles.low = pad;
-        in[t_run/4].bytes[t_run%4].nibbles.high = pad >> 4;
-        t_run++;
-    }
+    // while(t_run < 16){
+    //     in[t_run/4].bytes[t_run%4].nibbles.low = pad;
+    //     in[t_run/4].bytes[t_run%4].nibbles.high = pad >> 4;
+    //     t_run++;
+    // }
 
-    Encrypt(in, keyScheduling, output);
+    // Encrypt(in, keyScheduling, output);
+    HexWord lol, lolo;
+    lol.bytes[0].byte = 0x4C;
+    lol.bytes[1].byte = 0x91;
+    lol.bytes[2].byte = 0xFA;
+    lol.bytes[3].byte = 0x3D;
+    printHexWord((lol));
+    lolo = (SubWord(lol));
+    printHexWord(lolo);
     return 0;
 }
