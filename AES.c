@@ -225,7 +225,7 @@ void keyExpansion(const HexWord *rowKeyArray, HexWord *keyScheduling, const unsi
 }
 
 //Xoring 2 Words and then storing it in temp
-void wordXOR(HexWord *A, const HexWord *B){
+void wordXOR(HexWord *A, HexWord *B){
     for(unsigned char i = 0; i < 4; i++){
         for(unsigned char j = 0; j < 4; j++){
             A[i].bytes[j].byte = A[i].bytes[j].byte ^ B[i].bytes[j].byte;
@@ -275,10 +275,6 @@ void shiftRows(HexWord *inWord){
     inWord[3].bytes[2].byte = (tempHex2);
 
 
-    // Start from here, this notice both will take the same amount of the time a
-    tempHex1 = inWord[0].bytes[3].byte;
-    inWord[0].bytes[3].byte = inWord[3].bytes[3].byte;
-    tempHex1 = inWord[0].bytes[3]
     tempHex1 = inWord[0].bytes[3].byte;
     tempHex2 = inWord[1].bytes[3].byte;
     tempHex3 = inWord[2].bytes[3].byte;
@@ -343,7 +339,8 @@ HexByte galoisMul(const HexByte A, const HexByte B) {
 }
 
 // To Perform MixColumns
-void MixColumns(const HexWord *A, HexWord *temp){
+void MixColumns(HexWord *A){
+    HexByte t0, t1, t2, t3;
     HexByte temp_02, temp_03, temp_02_galoisMul, temp_03_galoisMul;
     temp_02.nibbles.high = 0x0;         // Argument of type "int" is incompatible with parameter of type "const HexByte"C
     temp_02.nibbles.low = 0x2;
@@ -354,28 +351,38 @@ void MixColumns(const HexWord *A, HexWord *temp){
     for (int i = 0; i < 4; i++){
         temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[0]);
         temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[1]);
-        temp[i].bytes[0].nibbles.low = (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low ^ A[i].bytes[2].nibbles.low ^ A[i].bytes[3].nibbles.low;
-        temp[i].bytes[0].nibbles.high = (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high ^ A[i].bytes[2].nibbles.high ^ A[i].bytes[3].nibbles.high;
+        t0.nibbles.low = (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low ^ A[i].bytes[2].nibbles.low ^ A[i].bytes[3].nibbles.low;
+        t0.nibbles.high = (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high ^ A[i].bytes[2].nibbles.high ^ A[i].bytes[3].nibbles.high;
 
         temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[1]);
         temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[2]);
-        temp[i].bytes[1].nibbles.low = A[i].bytes[0].nibbles.low ^ (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low ^ A[i].bytes[3].nibbles.low;
-        temp[i].bytes[1].nibbles.high = A[i].bytes[0].nibbles.high ^ (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high ^ A[i].bytes[3].nibbles.high;
+        t1.nibbles.low = A[i].bytes[0].nibbles.low ^ (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low ^ A[i].bytes[3].nibbles.low;
+        t1.nibbles.high = A[i].bytes[0].nibbles.high ^ (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high ^ A[i].bytes[3].nibbles.high;
 
         temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[2]);
         temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[3]);
-        temp[i].bytes[2].nibbles.low = A[i].bytes[0].nibbles.low ^ A[i].bytes[1].nibbles.low ^ (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low;
-        temp[i].bytes[2].nibbles.high = A[i].bytes[0].nibbles.high ^ A[i].bytes[1].nibbles.high ^ (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high;
+        t2.nibbles.low = A[i].bytes[0].nibbles.low ^ A[i].bytes[1].nibbles.low ^ (temp_02_galoisMul).nibbles.low ^ (temp_03_galoisMul).nibbles.low;
+        t2.nibbles.high = A[i].bytes[0].nibbles.high ^ A[i].bytes[1].nibbles.high ^ (temp_02_galoisMul).nibbles.high ^ (temp_03_galoisMul).nibbles.high;
 
         temp_02_galoisMul = galoisMul(temp_02, A[i].bytes[3]);
         temp_03_galoisMul = galoisMul(temp_03, A[i].bytes[0]);
-        temp[i].bytes[3].nibbles.low = (temp_03_galoisMul).nibbles.low ^ A[i].bytes[1].nibbles.low ^ A[i].bytes[2].nibbles.low ^ (temp_02_galoisMul).nibbles.low;
-        temp[i].bytes[3].nibbles.high = (temp_03_galoisMul).nibbles.high ^ A[i].bytes[1].nibbles.high ^ A[i].bytes[2].nibbles.high ^ (temp_02_galoisMul).nibbles.high;
+        t3.nibbles.low = (temp_03_galoisMul).nibbles.low ^ A[i].bytes[1].nibbles.low ^ A[i].bytes[2].nibbles.low ^ (temp_02_galoisMul).nibbles.low;
+        t3.nibbles.high = (temp_03_galoisMul).nibbles.high ^ A[i].bytes[1].nibbles.high ^ A[i].bytes[2].nibbles.high ^ (temp_02_galoisMul).nibbles.high;
+
+        A[i].bytes[0].nibbles.low = t0.nibbles.low;
+        A[i].bytes[0].nibbles.high = t0.nibbles.high;
+
+        A[i].bytes[1].nibbles.low = t1.nibbles.low;
+        A[i].bytes[1].nibbles.high = t1.nibbles.high;
+
+        A[i].bytes[2].nibbles.low = t2.nibbles.low;
+        A[i].bytes[2].nibbles.high = t2.nibbles.high;
+
+        A[i].bytes[3].nibbles.low = t3.nibbles.low;
+        A[i].bytes[3].nibbles.high = t3.nibbles.high;
     }
 }
 
-
-// Faulty !!!
 // To Perform Inverse MixColumns
 void InvMixColumns(const HexWord *A, HexWord *temp){
     HexByte temp_09, temp_0b, temp_0d, temp_0e, temp_09_galoisMul, temp_0b_galoisMul, temp_0d_galoisMul, temp_0e_galoisMul;
@@ -434,26 +441,26 @@ void Encrypt(const HexWord *in, const HexWord *key, HexWord *out){
 
     for(unsigned char i = 1; i < Nr; i++){
         subBytes(in);
-        shiftRows(out, state);
-        MixColumns(state, out);
+        shiftRows(in);
+        MixColumns(in);
     
         word_key[0] = key[4 * i];
         word_key[1] = key[4 * i + 1];
         word_key[2] = key[4 * i + 2]; 
         word_key[3] = key[4 * i + 3];  
 
-        wordXOR(out, word_key); 
+        wordXOR(in, word_key); 
     }
 
-    subBytes(state);
-    shiftRows(out, state);   
+    subBytes(in);
+    shiftRows(in);   
 
     word_key[0] = key[40];
     word_key[1] = key[41];
     word_key[2] = key[42];
     word_key[3] = key[43];
 
-    wordXOR(state, word_key);
+    wordXOR(in, word_key);
 }
 
 // To perform the Decryption
@@ -501,7 +508,7 @@ int main(){
     unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16];
 
     char read_block;
-    iFile = fopen("temp.txt","rb");
+    iFile = fopen("10.pdf","rb");
     oFile = fopen("encrypt","wb");
 
     if (iFile == NULL || oFile == NULL){

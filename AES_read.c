@@ -496,7 +496,7 @@ int main(){
     unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16];
 
     char read_block;
-    iFile = fopen("temp.txt","rb");
+    iFile = fopen("10.pdf","rb");
     oFile = fopen("encrypt","wb");
 
     if (iFile == NULL || oFile == NULL){
