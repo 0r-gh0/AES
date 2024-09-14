@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 /*
  * Emit the sbox as volatile const to prevent the compiler from doing
  * constant folding on sbox references involving fixed indexes.
@@ -533,7 +533,7 @@ int ftruncate(int oFile, off_t newSize);
 
 int main() {
 
-  HexWord in[4];
+  HexWord in[4], IV[4], input_2[4];
   HexByte argha;
 
   FILE *iFile, *oFile, *tempFile;
@@ -597,6 +597,316 @@ int main() {
   //     printHexWord(keyScheduling[i]);
   // }
 
+  unsigned char temp_iv[16];                // 16-byte IV
+  arc4random_buf(temp_iv, sizeof(temp_iv)); // Generate random IV
+
+  IV[0].bytes[0].nibbles.low = temp_iv[0];
+  IV[0].bytes[0].nibbles.high = temp_iv[0] >> 4;
+  IV[0].bytes[1].nibbles.low = temp_iv[1];
+  IV[0].bytes[1].nibbles.high = temp_iv[1] >> 4;
+  IV[0].bytes[2].nibbles.low = temp_iv[2];
+  IV[0].bytes[2].nibbles.high = temp_iv[2] >> 4;
+  IV[0].bytes[3].nibbles.low = temp_iv[3];
+  IV[0].bytes[3].nibbles.high = temp_iv[3] >> 4;
+
+  IV[1].bytes[0].nibbles.low = temp_iv[4];
+  IV[1].bytes[0].nibbles.high = temp_iv[4] >> 4;
+  IV[1].bytes[1].nibbles.low = temp_iv[5];
+  IV[1].bytes[1].nibbles.high = temp_iv[5] >> 4;
+  IV[1].bytes[2].nibbles.low = temp_iv[6];
+  IV[1].bytes[2].nibbles.high = temp_iv[6] >> 4;
+  IV[1].bytes[3].nibbles.low = temp_iv[7];
+  IV[1].bytes[3].nibbles.high = temp_iv[7] >> 4;
+
+  IV[2].bytes[0].nibbles.low = temp_iv[8];
+  IV[2].bytes[0].nibbles.high = temp_iv[8] >> 4;
+  IV[2].bytes[1].nibbles.low = temp_iv[9];
+  IV[2].bytes[1].nibbles.high = temp_iv[9] >> 4;
+  IV[2].bytes[2].nibbles.low = temp_iv[10];
+  IV[2].bytes[2].nibbles.high = temp_iv[10] >> 4;
+  IV[2].bytes[3].nibbles.low = temp_iv[11];
+  IV[2].bytes[3].nibbles.high = temp_iv[11] >> 4;
+
+  IV[3].bytes[0].nibbles.low = temp_iv[12];
+  IV[3].bytes[0].nibbles.high = temp_iv[12] >> 4;
+  IV[3].bytes[1].nibbles.low = temp_iv[13];
+  IV[3].bytes[1].nibbles.high = temp_iv[13] >> 4;
+  IV[3].bytes[2].nibbles.low = temp_iv[14];
+  IV[3].bytes[2].nibbles.high = temp_iv[14] >> 4;
+  IV[3].bytes[3].nibbles.low = temp_iv[15];
+  IV[3].bytes[3].nibbles.high = temp_iv[15] >> 4;
+
+  input_2[0] = IV[0];
+  input_2[1] = IV[1];
+  input_2[2] = IV[2];
+  input_2[3] = IV[3];
+
+  // ECB MODE
+
+  /*
+printf("\n~ Encryption ~\n");
+while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
+  in[0].bytes[0].nibbles.low = buff[0];
+  in[0].bytes[0].nibbles.high = buff[0] >> 4;
+  in[0].bytes[1].nibbles.low = buff[1];
+  in[0].bytes[1].nibbles.high = buff[1] >> 4;
+  in[0].bytes[2].nibbles.low = buff[2];
+  in[0].bytes[2].nibbles.high = buff[2] >> 4;
+  in[0].bytes[3].nibbles.low = buff[3];
+  in[0].bytes[3].nibbles.high = buff[3] >> 4;
+
+  in[1].bytes[0].nibbles.low = buff[4];
+  in[1].bytes[0].nibbles.high = buff[4] >> 4;
+  in[1].bytes[1].nibbles.low = buff[5];
+  in[1].bytes[1].nibbles.high = buff[5] >> 4;
+  in[1].bytes[2].nibbles.low = buff[6];
+  in[1].bytes[2].nibbles.high = buff[6] >> 4;
+  in[1].bytes[3].nibbles.low = buff[7];
+  in[1].bytes[3].nibbles.high = buff[7] >> 4;
+
+  in[2].bytes[0].nibbles.low = buff[8];
+  in[2].bytes[0].nibbles.high = buff[8] >> 4;
+  in[2].bytes[1].nibbles.low = buff[9];
+  in[2].bytes[1].nibbles.high = buff[9] >> 4;
+  in[2].bytes[2].nibbles.low = buff[10];
+  in[2].bytes[2].nibbles.high = buff[10] >> 4;
+  in[2].bytes[3].nibbles.low = buff[11];
+  in[2].bytes[3].nibbles.high = buff[11] >> 4;
+
+  in[3].bytes[0].nibbles.low = buff[12];
+  in[3].bytes[0].nibbles.high = buff[12] >> 4;
+  in[3].bytes[1].nibbles.low = buff[13];
+  in[3].bytes[1].nibbles.high = buff[13] >> 4;
+  in[3].bytes[2].nibbles.low = buff[14];
+  in[3].bytes[2].nibbles.high = buff[14] >> 4;
+  in[3].bytes[3].nibbles.low = buff[15];
+  in[3].bytes[3].nibbles.high = buff[15] >> 4;
+
+  Encrypt(in, keyScheduling, output);
+  for (unsigned char i = 0; i < 4; i++) {
+    printHexWord(output[i]);
+  }
+
+  out_buff[0] =
+      output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
+  out_buff[1] =
+      output[0].bytes[1].nibbles.high << 4 | output[0].bytes[1].nibbles.low;
+  out_buff[2] =
+      output[0].bytes[2].nibbles.high << 4 | output[0].bytes[2].nibbles.low;
+  out_buff[3] =
+      output[0].bytes[3].nibbles.high << 4 | output[0].bytes[3].nibbles.low;
+
+  out_buff[4] =
+      output[1].bytes[0].nibbles.high << 4 | output[1].bytes[0].nibbles.low;
+  out_buff[5] =
+      output[1].bytes[1].nibbles.high << 4 | output[1].bytes[1].nibbles.low;
+  out_buff[6] =
+      output[1].bytes[2].nibbles.high << 4 | output[1].bytes[2].nibbles.low;
+  out_buff[7] =
+      output[1].bytes[3].nibbles.high << 4 | output[1].bytes[3].nibbles.low;
+
+  out_buff[8] =
+      output[2].bytes[0].nibbles.high << 4 | output[2].bytes[0].nibbles.low;
+  out_buff[9] =
+      output[2].bytes[1].nibbles.high << 4 | output[2].bytes[1].nibbles.low;
+  out_buff[10] =
+      output[2].bytes[2].nibbles.high << 4 | output[2].bytes[2].nibbles.low;
+  out_buff[11] =
+      output[2].bytes[3].nibbles.high << 4 | output[2].bytes[3].nibbles.low;
+
+  out_buff[12] =
+      output[3].bytes[0].nibbles.high << 4 | output[3].bytes[0].nibbles.low;
+  out_buff[13] =
+      output[3].bytes[1].nibbles.high << 4 | output[3].bytes[1].nibbles.low;
+  out_buff[14] =
+      output[3].bytes[2].nibbles.high << 4 | output[3].bytes[2].nibbles.low;
+  out_buff[15] =
+      output[3].bytes[3].nibbles.high << 4 | output[3].bytes[3].nibbles.low;
+
+  fwrite(out_buff, 1, 16, oFile);
+}
+
+while (tempCounter < byteRead) {
+  if (temp_j == 4) {
+    temp_j = 0;
+    temp_i++;
+  }
+  in[temp_i].bytes[temp_j].nibbles.low = buff[tempCounter];
+  in[temp_i].bytes[temp_j].nibbles.high = buff[tempCounter] >> 4;
+  temp_j++;
+  tempCounter++;
+}
+
+pad = 16 - byteRead;
+unsigned char t_run = byteRead;
+
+while (t_run < 16) {
+  in[t_run / 4].bytes[t_run % 4].nibbles.low = pad;
+  in[t_run / 4].bytes[t_run % 4].nibbles.high = pad >> 4;
+  t_run++;
+}
+
+Encrypt(in, keyScheduling, output);
+for (unsigned char i = 0; i < 4; i++) {
+  printHexWord(output[i]);
+}
+
+out_buff[0] =
+    output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
+out_buff[1] =
+    output[0].bytes[1].nibbles.high << 4 | output[0].bytes[1].nibbles.low;
+out_buff[2] =
+    output[0].bytes[2].nibbles.high << 4 | output[0].bytes[2].nibbles.low;
+out_buff[3] =
+    output[0].bytes[3].nibbles.high << 4 | output[0].bytes[3].nibbles.low;
+
+out_buff[4] =
+    output[1].bytes[0].nibbles.high << 4 | output[1].bytes[0].nibbles.low;
+out_buff[5] =
+    output[1].bytes[1].nibbles.high << 4 | output[1].bytes[1].nibbles.low;
+out_buff[6] =
+    output[1].bytes[2].nibbles.high << 4 | output[1].bytes[2].nibbles.low;
+out_buff[7] =
+    output[1].bytes[3].nibbles.high << 4 | output[1].bytes[3].nibbles.low;
+
+out_buff[8] =
+    output[2].bytes[0].nibbles.high << 4 | output[2].bytes[0].nibbles.low;
+out_buff[9] =
+    output[2].bytes[1].nibbles.high << 4 | output[2].bytes[1].nibbles.low;
+out_buff[10] =
+    output[2].bytes[2].nibbles.high << 4 | output[2].bytes[2].nibbles.low;
+out_buff[11] =
+    output[2].bytes[3].nibbles.high << 4 | output[2].bytes[3].nibbles.low;
+
+out_buff[12] =
+    output[3].bytes[0].nibbles.high << 4 | output[3].bytes[0].nibbles.low;
+out_buff[13] =
+    output[3].bytes[1].nibbles.high << 4 | output[3].bytes[1].nibbles.low;
+out_buff[14] =
+    output[3].bytes[2].nibbles.high << 4 | output[3].bytes[2].nibbles.low;
+out_buff[15] =
+    output[3].bytes[3].nibbles.high << 4 | output[3].bytes[3].nibbles.low;
+
+fwrite(out_buff, 1, 16, oFile);
+
+// printf("\n~ Decryption ~\n");
+// Decrypt(output, keyScheduling, dec);
+// for (unsigned char i = 0; i < 4; i++) {
+//     printHexWord(dec[i]);
+// }
+fclose(iFile);
+fclose(oFile);
+printf("\n\nENCRYPTED !!!\n\n");
+
+iFile = fopen("encrypt.bin", "rb");
+oFile = fopen("decrypt.bin", "wb");
+
+if (iFile == NULL || oFile == NULL) {
+  printf("File Couldn't be opened !!");
+  return 1;
+}
+
+while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
+  in[0].bytes[0].nibbles.low = buff[0];
+  in[0].bytes[0].nibbles.high = buff[0] >> 4;
+  in[0].bytes[1].nibbles.low = buff[1];
+  in[0].bytes[1].nibbles.high = buff[1] >> 4;
+  in[0].bytes[2].nibbles.low = buff[2];
+  in[0].bytes[2].nibbles.high = buff[2] >> 4;
+  in[0].bytes[3].nibbles.low = buff[3];
+  in[0].bytes[3].nibbles.high = buff[3] >> 4;
+
+  in[1].bytes[0].nibbles.low = buff[4];
+  in[1].bytes[0].nibbles.high = buff[4] >> 4;
+  in[1].bytes[1].nibbles.low = buff[5];
+  in[1].bytes[1].nibbles.high = buff[5] >> 4;
+  in[1].bytes[2].nibbles.low = buff[6];
+  in[1].bytes[2].nibbles.high = buff[6] >> 4;
+  in[1].bytes[3].nibbles.low = buff[7];
+  in[1].bytes[3].nibbles.high = buff[7] >> 4;
+
+  in[2].bytes[0].nibbles.low = buff[8];
+  in[2].bytes[0].nibbles.high = buff[8] >> 4;
+  in[2].bytes[1].nibbles.low = buff[9];
+  in[2].bytes[1].nibbles.high = buff[9] >> 4;
+  in[2].bytes[2].nibbles.low = buff[10];
+  in[2].bytes[2].nibbles.high = buff[10] >> 4;
+  in[2].bytes[3].nibbles.low = buff[11];
+  in[2].bytes[3].nibbles.high = buff[11] >> 4;
+
+  in[3].bytes[0].nibbles.low = buff[12];
+  in[3].bytes[0].nibbles.high = buff[12] >> 4;
+  in[3].bytes[1].nibbles.low = buff[13];
+  in[3].bytes[1].nibbles.high = buff[13] >> 4;
+  in[3].bytes[2].nibbles.low = buff[14];
+  in[3].bytes[2].nibbles.high = buff[14] >> 4;
+  in[3].bytes[3].nibbles.low = buff[15];
+  in[3].bytes[3].nibbles.high = buff[15] >> 4;
+
+  Decrypt(in, keyScheduling, output);
+  for (unsigned char i = 0; i < 4; i++) {
+    printHexWord(output[i]);
+  }
+
+  out_buff[0] =
+      output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
+  out_buff[1] =
+      output[0].bytes[1].nibbles.high << 4 | output[0].bytes[1].nibbles.low;
+  out_buff[2] =
+      output[0].bytes[2].nibbles.high << 4 | output[0].bytes[2].nibbles.low;
+  out_buff[3] =
+      output[0].bytes[3].nibbles.high << 4 | output[0].bytes[3].nibbles.low;
+
+  out_buff[4] =
+      output[1].bytes[0].nibbles.high << 4 | output[1].bytes[0].nibbles.low;
+  out_buff[5] =
+      output[1].bytes[1].nibbles.high << 4 | output[1].bytes[1].nibbles.low;
+  out_buff[6] =
+      output[1].bytes[2].nibbles.high << 4 | output[1].bytes[2].nibbles.low;
+  out_buff[7] =
+      output[1].bytes[3].nibbles.high << 4 | output[1].bytes[3].nibbles.low;
+
+  out_buff[8] =
+      output[2].bytes[0].nibbles.high << 4 | output[2].bytes[0].nibbles.low;
+  out_buff[9] =
+      output[2].bytes[1].nibbles.high << 4 | output[2].bytes[1].nibbles.low;
+  out_buff[10] =
+      output[2].bytes[2].nibbles.high << 4 | output[2].bytes[2].nibbles.low;
+  out_buff[11] =
+      output[2].bytes[3].nibbles.high << 4 | output[2].bytes[3].nibbles.low;
+
+  out_buff[12] =
+      output[3].bytes[0].nibbles.high << 4 | output[3].bytes[0].nibbles.low;
+  out_buff[13] =
+      output[3].bytes[1].nibbles.high << 4 | output[3].bytes[1].nibbles.low;
+  out_buff[14] =
+      output[3].bytes[2].nibbles.high << 4 | output[3].bytes[2].nibbles.low;
+  out_buff[15] =
+      output[3].bytes[3].nibbles.high << 4 | output[3].bytes[3].nibbles.low;
+
+  fwrite(out_buff, 1, 16, oFile);
+}
+
+for (int i = 14; i >= 0; i--) {
+  if ((int)out_buff[i] == (int)out_buff[15]) {
+    pad_counter++;
+  }
+}
+
+if (pad_counter + 1 == (int)out_buff[15]) {
+  fseek(oFile, 0, SEEK_END);       // Seek to the End of the file
+  long currentSize = ftell(oFile); // Determine the new File Size
+  long newSize = currentSize - (int)out_buff[15];
+  ftruncate(fileno(oFile), newSize); // Truncate the File
+}
+
+fclose(iFile);
+fclose(oFile);
+
+printf("\n\nDECRYPTED !!!\n"); */
+
+  // CBC MODE
+    
   printf("\n~ Encryption ~\n");
   while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
     in[0].bytes[0].nibbles.low = buff[0];
@@ -635,6 +945,26 @@ int main() {
     in[3].bytes[3].nibbles.low = buff[15];
     in[3].bytes[3].nibbles.high = buff[15] >> 4;
 
+    input_2[0].bytes[0].byte = input_2[0].bytes[0].byte ^ in[0].bytes[0].byte;
+    input_2[0].bytes[1].byte = input_2[0].bytes[1].byte ^ in[0].bytes[1].byte;
+    input_2[0].bytes[2].byte = input_2[0].bytes[2].byte ^ in[0].bytes[2].byte;
+    input_2[0].bytes[3].byte = input_2[0].bytes[3].byte ^ in[0].bytes[3].byte;
+
+    input_2[1].bytes[0].byte = input_2[1].bytes[0].byte ^ in[1].bytes[0].byte;
+    input_2[1].bytes[1].byte = input_2[1].bytes[1].byte ^ in[1].bytes[1].byte;
+    input_2[1].bytes[2].byte = input_2[1].bytes[2].byte ^ in[1].bytes[2].byte;
+    input_2[1].bytes[3].byte = input_2[1].bytes[3].byte ^ in[1].bytes[3].byte;
+    
+    input_2[2].bytes[0].byte = input_2[2].bytes[0].byte ^ in[2].bytes[0].byte;
+    input_2[2].bytes[1].byte = input_2[2].bytes[1].byte ^ in[2].bytes[1].byte;
+    input_2[2].bytes[2].byte = input_2[2].bytes[2].byte ^ in[2].bytes[2].byte;
+    input_2[2].bytes[3].byte = input_2[2].bytes[3].byte ^ in[2].bytes[3].byte;
+    
+    input_2[3].bytes[0].byte = input_2[3].bytes[0].byte ^ in[3].bytes[0].byte;
+    input_2[3].bytes[1].byte = input_2[3].bytes[1].byte ^ in[3].bytes[1].byte;
+    input_2[3].bytes[2].byte = input_2[3].bytes[2].byte ^ in[3].bytes[2].byte;
+    input_2[3].bytes[3].byte = input_2[3].bytes[3].byte ^ in[3].bytes[3].byte;
+    
     Encrypt(in, keyScheduling, output);
     for (unsigned char i = 0; i < 4; i++) {
       printHexWord(output[i]);
