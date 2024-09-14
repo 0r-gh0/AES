@@ -533,7 +533,7 @@ int ftruncate(int oFile, off_t newSize);
 
 int main() {
 
-  HexWord in[4], IV[4], input_2[4];
+  HexWord in[4], IV[4], input_2[4], input_next[4];
   HexByte argha;
 
   FILE *iFile, *oFile, *tempFile;
@@ -641,26 +641,28 @@ int main() {
   IV[3].bytes[3].nibbles.low = temp_iv[15];
   IV[3].bytes[3].nibbles.high = temp_iv[15] >> 4;
 
-  input_2[0] = IV[0];
-  input_2[1] = IV[1];
-  input_2[2] = IV[2];
-  input_2[3] = IV[3];
+  // IMPORTANT::UNCOMMENT LATER change later
+  // input_2[0] = IV[0];
+  // input_2[1] = IV[1];
+  // input_2[2] = IV[2];
+  // input_2[3] = IV[3];
 
   for (int i = 0; i < sizeof(temp_iv); i++) {
     printf("%02x", temp_iv[i]);
   }
   printf("\n");
 
-input_2[0] = rowKeyArray[0];
-input_2[1] = rowKeyArray[1];
-input_2[2] = rowKeyArray[2];
-input_2[3] = rowKeyArray[3];
+  // Change this later
+  input_2[0] = IV[0] = rowKeyArray[0];
+  input_2[1] = IV[1] = rowKeyArray[1];
+  input_2[2] = IV[2] = rowKeyArray[2];
+  input_2[3] = IV[3] = rowKeyArray[3];
 
-printHexWord(input_2[0]);
-printHexWord(input_2[1]);
-printHexWord(input_2[2]);
-printHexWord(input_2[3]);
-    
+  printHexWord(input_2[0]);
+  printHexWord(input_2[1]);
+  printHexWord(input_2[2]);
+  printHexWord(input_2[3]);
+
   // ECB MODE
 
   /*
@@ -1054,7 +1056,18 @@ printf("\n\nDECRYPTED !!!\n"); */
     t_run++;
   }
 
-  // DOUBT
+  // input_2[0] = IV[0];
+  // input_2[1] = IV[1];
+  // input_2[2] = IV[2];
+  // input_2[3] = IV[3];
+
+  printf("MOMOTA\n\n");
+  printHexWord(in[0]);
+  printHexWord(in[1]);
+  printHexWord(in[2]);
+  printHexWord(in[3]);
+  printf("MOMOTA\n\n");
+
   input_2[0].bytes[0].byte = input_2[0].bytes[0].byte ^ in[0].bytes[0].byte;
   input_2[0].bytes[1].byte = input_2[0].bytes[1].byte ^ in[0].bytes[1].byte;
   input_2[0].bytes[2].byte = input_2[0].bytes[2].byte ^ in[0].bytes[2].byte;
@@ -1130,6 +1143,11 @@ printf("\n\nDECRYPTED !!!\n"); */
     return 1;
   }
 
+  input_2[0] = IV[0];
+  input_2[1] = IV[1];
+  input_2[2] = IV[2];
+  input_2[3] = IV[3];
+
   while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
     in[0].bytes[0].nibbles.low = buff[0];
     in[0].bytes[0].nibbles.high = buff[0] >> 4;
@@ -1172,6 +1190,42 @@ printf("\n\nDECRYPTED !!!\n"); */
       printHexWord(output[i]);
     }
 
+    output[0].bytes[0].byte =
+        input_2[0].bytes[0].byte ^ output[0].bytes[0].byte;
+    output[0].bytes[1].byte =
+        input_2[0].bytes[1].byte ^ output[0].bytes[1].byte;
+    output[0].bytes[2].byte =
+        input_2[0].bytes[2].byte ^ output[0].bytes[2].byte;
+    output[0].bytes[3].byte =
+        input_2[0].bytes[3].byte ^ output[0].bytes[3].byte;
+
+    output[1].bytes[0].byte =
+        input_2[1].bytes[0].byte ^ output[1].bytes[0].byte;
+    output[1].bytes[1].byte =
+        input_2[1].bytes[1].byte ^ output[1].bytes[1].byte;
+    output[1].bytes[2].byte =
+        input_2[1].bytes[2].byte ^ output[1].bytes[2].byte;
+    output[1].bytes[3].byte =
+        input_2[1].bytes[3].byte ^ output[1].bytes[3].byte;
+
+    output[2].bytes[0].byte =
+        input_2[2].bytes[0].byte ^ output[2].bytes[0].byte;
+    output[2].bytes[1].byte =
+        input_2[2].bytes[1].byte ^ output[2].bytes[1].byte;
+    output[2].bytes[2].byte =
+        input_2[2].bytes[2].byte ^ output[2].bytes[2].byte;
+    output[2].bytes[3].byte =
+        input_2[2].bytes[3].byte ^ output[2].bytes[3].byte;
+
+    output[3].bytes[0].byte =
+        input_2[3].bytes[0].byte ^ output[3].bytes[0].byte;
+    output[3].bytes[1].byte =
+        input_2[3].bytes[1].byte ^ output[3].bytes[1].byte;
+    output[3].bytes[2].byte =
+        input_2[3].bytes[2].byte ^ output[3].bytes[2].byte;
+    output[3].bytes[3].byte =
+        input_2[3].bytes[3].byte ^ output[3].bytes[3].byte;
+
     out_buff[0] =
         output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
     out_buff[1] =
@@ -1209,6 +1263,11 @@ printf("\n\nDECRYPTED !!!\n"); */
         output[3].bytes[3].nibbles.high << 4 | output[3].bytes[3].nibbles.low;
 
     fwrite(out_buff, 1, 16, oFile);
+
+    input_2[0] = in[0];
+    input_2[1] = in[1];
+    input_2[2] = in[2];
+    input_2[3] = in[3];
   }
 
   for (int i = 14; i >= 0; i--) {
