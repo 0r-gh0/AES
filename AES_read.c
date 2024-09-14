@@ -1353,11 +1353,6 @@ printf("\n\nDECRYPTED !!!\n"); */
           printHexWord(output[i]);
         }
 
-        // input_2[0] = output[0];
-        // input_2[1] = output[1];
-        // input_2[2] = output[2];
-        // input_2[3] = output[3];
-
         out_buff[0] =
             output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
         out_buff[1] =
@@ -1493,11 +1488,12 @@ printf("\n\nDECRYPTED !!!\n"); */
         return 1;
       }
 
-      input_2[0] = IV[0];
-      input_2[1] = IV[1];
-      input_2[2] = IV[2];
-      input_2[3] = IV[3];
+    input_2[0] = IV[0];
+    input_2[1] = IV[1];
+    input_2[2] = IV[2];
+    input_2[3] = IV[3];
 
+    printf("\n~ Decryption ~\n");
       while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
         in[0].bytes[0].nibbles.low = buff[0];
         in[0].bytes[0].nibbles.high = buff[0] >> 4;
@@ -1535,43 +1531,36 @@ printf("\n\nDECRYPTED !!!\n"); */
         in[3].bytes[3].nibbles.low = buff[15];
         in[3].bytes[3].nibbles.high = buff[15] >> 4;
 
-        Decrypt(in, keyScheduling, output);
+        Encrypt(input_2, keyScheduling, output);
 
-        output[0].bytes[0].byte =
-            input_2[0].bytes[0].byte ^ output[0].bytes[0].byte;
-        output[0].bytes[1].byte =
-            input_2[0].bytes[1].byte ^ output[0].bytes[1].byte;
-        output[0].bytes[2].byte =
-            input_2[0].bytes[2].byte ^ output[0].bytes[2].byte;
-        output[0].bytes[3].byte =
-            input_2[0].bytes[3].byte ^ output[0].bytes[3].byte;
+        input_2[0] =  output[0];
+        input_2[1] =  output[1];
+        input_2[2] =  output[2];
+        input_2[3] =  output[3];
 
-        output[1].bytes[0].byte =
-            input_2[1].bytes[0].byte ^ output[1].bytes[0].byte;
-        output[1].bytes[1].byte =
-            input_2[1].bytes[1].byte ^ output[1].bytes[1].byte;
-        output[1].bytes[2].byte =
-            input_2[1].bytes[2].byte ^ output[1].bytes[2].byte;
-        output[1].bytes[3].byte =
-            input_2[1].bytes[3].byte ^ output[1].bytes[3].byte;
+        output[0].bytes[0].byte = output[0].bytes[0].byte ^ in[0].bytes[0].byte;
+        output[0].bytes[1].byte = output[0].bytes[1].byte ^ in[0].bytes[1].byte;
+        output[0].bytes[2].byte = output[0].bytes[2].byte ^ in[0].bytes[2].byte;
+        output[0].bytes[3].byte = output[0].bytes[3].byte ^ in[0].bytes[3].byte;
 
-        output[2].bytes[0].byte =
-            input_2[2].bytes[0].byte ^ output[2].bytes[0].byte;
-        output[2].bytes[1].byte =
-            input_2[2].bytes[1].byte ^ output[2].bytes[1].byte;
-        output[2].bytes[2].byte =
-            input_2[2].bytes[2].byte ^ output[2].bytes[2].byte;
-        output[2].bytes[3].byte =
-            input_2[2].bytes[3].byte ^ output[2].bytes[3].byte;
+        output[1].bytes[0].byte = output[1].bytes[0].byte ^ in[1].bytes[0].byte;
+        output[1].bytes[1].byte = output[1].bytes[1].byte ^ in[1].bytes[1].byte;
+        output[1].bytes[2].byte = output[1].bytes[2].byte ^ in[1].bytes[2].byte;
+        output[1].bytes[3].byte = output[1].bytes[3].byte ^ in[1].bytes[3].byte;
 
-        output[3].bytes[0].byte =
-            input_2[3].bytes[0].byte ^ output[3].bytes[0].byte;
-        output[3].bytes[1].byte =
-            input_2[3].bytes[1].byte ^ output[3].bytes[1].byte;
-        output[3].bytes[2].byte =
-            input_2[3].bytes[2].byte ^ output[3].bytes[2].byte;
-        output[3].bytes[3].byte =
-            input_2[3].bytes[3].byte ^ output[3].bytes[3].byte;
+        output[2].bytes[0].byte = output[2].bytes[0].byte ^ in[2].bytes[0].byte;
+        output[2].bytes[1].byte = output[2].bytes[1].byte ^ in[2].bytes[1].byte;
+        output[2].bytes[2].byte = output[2].bytes[2].byte ^ in[2].bytes[2].byte;
+        output[2].bytes[3].byte = output[2].bytes[3].byte ^ in[2].bytes[3].byte;
+
+        output[3].bytes[0].byte = output[3].bytes[0].byte ^ in[3].bytes[0].byte;
+        output[3].bytes[1].byte = output[3].bytes[1].byte ^ in[3].bytes[1].byte;
+        output[3].bytes[2].byte = output[3].bytes[2].byte ^ in[3].bytes[2].byte;
+        output[3].bytes[3].byte = output[3].bytes[3].byte ^ in[3].bytes[3].byte;
+
+        for (unsigned char i = 0; i < 4; i++) {
+          printHexWord(output[i]);
+        }
 
         out_buff[0] =
             output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
@@ -1610,14 +1599,9 @@ printf("\n\nDECRYPTED !!!\n"); */
             output[3].bytes[3].nibbles.high << 4 | output[3].bytes[3].nibbles.low;
 
         fwrite(out_buff, 1, 16, oFile);
-
-        input_2[0] = in[0];
-        input_2[1] = in[1];
-        input_2[2] = in[2];
-        input_2[3] = in[3];
       }
 
-      for (int i = 14; i >= 0; i--) {
+    for (int i = 14; i >= 0; i--) {
         if ((int)out_buff[i] == (int)out_buff[15]) {
           pad_counter++;
         }
@@ -1632,7 +1616,6 @@ printf("\n\nDECRYPTED !!!\n"); */
 
       fclose(iFile);
       fclose(oFile);
-
       printf("\n\nDECRYPTED !!!\n");
 
   return 0;
