@@ -1619,7 +1619,7 @@ printf("\n\nDECRYPTED !!!\n"); */
       printf("\n\nDECRYPTED !!!\n");
 */
     // CFB 
-
+/*
     input_2[0] = IV[0];
     input_2[1] = IV[1];
     input_2[2] = IV[2];
@@ -1958,5 +1958,6 @@ printf("\n\nDECRYPTED !!!\n"); */
       fclose(iFile);
       fclose(oFile);
       printf("\n\nDECRYPTED !!!\n");
+*/
   return 0;
 }
