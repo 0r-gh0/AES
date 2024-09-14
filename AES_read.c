@@ -551,7 +551,7 @@ int main() {
   }
 
   // const char *key = "2b7e151628aed2a6abf7158809cf4f3c";   // Example key
-  // string
+  // string "YELLOW SUBMARINE"
   const char *key = "59454c4c4f57205355424d4152494e45"; // Example key string
   unsigned char keyLen = 32;
 
@@ -589,6 +589,11 @@ int main() {
   // for (unsigned char i = 0; i < 4; i++) {
   //     printHexWord(input[i]);
   // }
+
+  printHexWord(rowKeyArray[0]);
+  printHexWord(rowKeyArray[1]);
+  printHexWord(rowKeyArray[2]);
+  printHexWord(rowKeyArray[3]);
 
   // The Key Scheduling Output
   printf("\n~ Key Scheduling ~ \n");
@@ -641,6 +646,21 @@ int main() {
   input_2[2] = IV[2];
   input_2[3] = IV[3];
 
+  for (int i = 0; i < sizeof(temp_iv); i++) {
+    printf("%02x", temp_iv[i]);
+  }
+  printf("\n");
+
+input_2[0] = rowKeyArray[0];
+input_2[1] = rowKeyArray[1];
+input_2[2] = rowKeyArray[2];
+input_2[3] = rowKeyArray[3];
+
+printHexWord(input_2[0]);
+printHexWord(input_2[1]);
+printHexWord(input_2[2]);
+printHexWord(input_2[3]);
+    
   // ECB MODE
 
   /*
@@ -906,7 +926,7 @@ fclose(oFile);
 printf("\n\nDECRYPTED !!!\n"); */
 
   // CBC MODE
-    
+
   printf("\n~ Encryption ~\n");
   while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
     in[0].bytes[0].nibbles.low = buff[0];
@@ -954,21 +974,26 @@ printf("\n\nDECRYPTED !!!\n"); */
     input_2[1].bytes[1].byte = input_2[1].bytes[1].byte ^ in[1].bytes[1].byte;
     input_2[1].bytes[2].byte = input_2[1].bytes[2].byte ^ in[1].bytes[2].byte;
     input_2[1].bytes[3].byte = input_2[1].bytes[3].byte ^ in[1].bytes[3].byte;
-    
+
     input_2[2].bytes[0].byte = input_2[2].bytes[0].byte ^ in[2].bytes[0].byte;
     input_2[2].bytes[1].byte = input_2[2].bytes[1].byte ^ in[2].bytes[1].byte;
     input_2[2].bytes[2].byte = input_2[2].bytes[2].byte ^ in[2].bytes[2].byte;
     input_2[2].bytes[3].byte = input_2[2].bytes[3].byte ^ in[2].bytes[3].byte;
-    
+
     input_2[3].bytes[0].byte = input_2[3].bytes[0].byte ^ in[3].bytes[0].byte;
     input_2[3].bytes[1].byte = input_2[3].bytes[1].byte ^ in[3].bytes[1].byte;
     input_2[3].bytes[2].byte = input_2[3].bytes[2].byte ^ in[3].bytes[2].byte;
     input_2[3].bytes[3].byte = input_2[3].bytes[3].byte ^ in[3].bytes[3].byte;
-    
-    Encrypt(in, keyScheduling, output);
+
+    Encrypt(input_2, keyScheduling, output);
     for (unsigned char i = 0; i < 4; i++) {
       printHexWord(output[i]);
     }
+
+    input_2[0] = output[0];
+    input_2[1] = output[1];
+    input_2[2] = output[2];
+    input_2[3] = output[3];
 
     out_buff[0] =
         output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
@@ -1029,7 +1054,28 @@ printf("\n\nDECRYPTED !!!\n"); */
     t_run++;
   }
 
-  Encrypt(in, keyScheduling, output);
+  // DOUBT
+  input_2[0].bytes[0].byte = input_2[0].bytes[0].byte ^ in[0].bytes[0].byte;
+  input_2[0].bytes[1].byte = input_2[0].bytes[1].byte ^ in[0].bytes[1].byte;
+  input_2[0].bytes[2].byte = input_2[0].bytes[2].byte ^ in[0].bytes[2].byte;
+  input_2[0].bytes[3].byte = input_2[0].bytes[3].byte ^ in[0].bytes[3].byte;
+
+  input_2[1].bytes[0].byte = input_2[1].bytes[0].byte ^ in[1].bytes[0].byte;
+  input_2[1].bytes[1].byte = input_2[1].bytes[1].byte ^ in[1].bytes[1].byte;
+  input_2[1].bytes[2].byte = input_2[1].bytes[2].byte ^ in[1].bytes[2].byte;
+  input_2[1].bytes[3].byte = input_2[1].bytes[3].byte ^ in[1].bytes[3].byte;
+
+  input_2[2].bytes[0].byte = input_2[2].bytes[0].byte ^ in[2].bytes[0].byte;
+  input_2[2].bytes[1].byte = input_2[2].bytes[1].byte ^ in[2].bytes[1].byte;
+  input_2[2].bytes[2].byte = input_2[2].bytes[2].byte ^ in[2].bytes[2].byte;
+  input_2[2].bytes[3].byte = input_2[2].bytes[3].byte ^ in[2].bytes[3].byte;
+
+  input_2[3].bytes[0].byte = input_2[3].bytes[0].byte ^ in[3].bytes[0].byte;
+  input_2[3].bytes[1].byte = input_2[3].bytes[1].byte ^ in[3].bytes[1].byte;
+  input_2[3].bytes[2].byte = input_2[3].bytes[2].byte ^ in[3].bytes[2].byte;
+  input_2[3].bytes[3].byte = input_2[3].bytes[3].byte ^ in[3].bytes[3].byte;
+
+  Encrypt(input_2, keyScheduling, output);
   for (unsigned char i = 0; i < 4; i++) {
     printHexWord(output[i]);
   }
@@ -1072,11 +1118,6 @@ printf("\n\nDECRYPTED !!!\n"); */
 
   fwrite(out_buff, 1, 16, oFile);
 
-  // printf("\n~ Decryption ~\n");
-  // Decrypt(output, keyScheduling, dec);
-  // for (unsigned char i = 0; i < 4; i++) {
-  //     printHexWord(dec[i]);
-  // }
   fclose(iFile);
   fclose(oFile);
   printf("\n\nENCRYPTED !!!\n\n");
