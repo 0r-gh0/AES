@@ -528,6 +528,9 @@ void Decrypt(const HexWord *in, const HexWord *key, HexWord *out) {
   wordXOR(state, word_key, out);
 }
 
+// Function Declaration Needed before usage
+int ftruncate(int oFile, off_t newSize);
+
 int main() {
 
   HexWord in[4];
@@ -837,21 +840,17 @@ int main() {
     fwrite(out_buff, 1, 16, oFile);
   }
 
-  printf("\n%d", out_buff[15]);
-
   for (int i = 14; i >= 0; i--) {
     if ((int)out_buff[i] == (int)out_buff[15]) {
       pad_counter++;
-      printf("%d : %d\n", pad_counter, i);
     }
   }
 
-  if(pad_counter + 1 == (int) out_buff[15]){
-      printf("\nTRUEEE : %d", pad_counter);
-      fseek(oFile, 0, SEEK_END);        // Seek to the End of the file
-      long currentSize = ftell(oFile);  // Determine the new File Size
-      long newSize = currentSize - (int) out_buff[15];
-      ftruncate(fileno(oFile), newSize);// Truncate the File
+  if (pad_counter + 1 == (int)out_buff[15]) {
+    fseek(oFile, 0, SEEK_END);       // Seek to the End of the file
+    long currentSize = ftell(oFile); // Determine the new File Size
+    long newSize = currentSize - (int)out_buff[15];
+    ftruncate(fileno(oFile), newSize); // Truncate the File
   }
 
   fclose(iFile);
