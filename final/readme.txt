@@ -3,7 +3,7 @@ To Run the AES Program, proceed as follows :
 
     1) Open the main.c
     2) Enter the key in Hex String Format (128-bit)
-    3) In line #124 enter the Input file (By Default : hi.txt)
+    3) In line #85 enter the Input file (By Default : hi.txt)
     4) Output File can be found in the Same Directory (By Default : encrypt.bin)
     5) For Verification the Same Encrypted File is Decrypted (By Default : decrypt.bin)
     6) To Select the Modes of Operation, Uncomment the lines for ENC (92 - 95) & DEC (113 - 116)
