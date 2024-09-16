@@ -3,25 +3,19 @@
 #include "run/include/utils.h"
 #include "main.h"      // For HexWord, HexByte, and any custom types
 
-#include "mode/include/enc/cfb_enc.h"    // For OfbEnc function
-#include "mode/include/dec/cfb_dec.h"    // For OfbDec function (if decryption is also needed)
-#include "mode/include/enc/ofb_enc.h"    // For OfbEnc function
-#include "mode/include/dec/ofb_dec.h"    // For OfbDec function (if decryption is also needed)
-#include "mode/include/enc/cbc_enc.h"    // For CbcEnc function
-#include "mode/include/dec/cbc_dec.h"    // For CbcDec function (if decryption is also needed)
-#include "mode/include/enc/ecb_enc.h"    // For EcbEnc function
-#include "mode/include/dec/ecb_dec.h"    // For EcbDec function (if decryption is also needed)
+#include "modes/include/enc/cfb_enc.h"    // For OfbEnc function
+#include "modes/include/dec/cfb_dec.h"    // For OfbDec function (if decryption is also needed)
+#include "modes/include/enc/ofb_enc.h"    // For OfbEnc function
+#include "modes/include/dec/ofb_dec.h"    // For OfbDec function (if decryption is also needed)
+#include "modes/include/enc/cbc_enc.h"    // For CbcEnc function
+#include "modes/include/dec/cbc_dec.h"    // For CbcDec function (if decryption is also needed)
+#include "modes/include/enc/ecb_enc.h"    // For EcbEnc function
+#include "modes/include/dec/ecb_dec.h"    // For EcbDec function (if decryption is also needed)
 
 int main() {
     HexWord IV[4], input_2[4];
-    // HexByte argha;
     
     FILE *iFile, *oFile;
-    // unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16], out_buff[16];
-    // char read_block, FILE *tempFile, pad_counter buff ar outbuff byteRead hexword in[4], input_next[4], output[4], pad , tempitempj ar tempcounter soralam
-    // char read_block;
-    // int pad_counter = 0;
-    
     
     //  char *key = "d4bf5d30e0b452aeb84111f11e2798e5";    // Example KEY
     //  char *key = "3243f6a8885a308d313198a2e0370734";    // Example KEY
@@ -37,24 +31,10 @@ int main() {
     
     HexWord rowKeyArray[keyCount];            // Array to store all Initial Keys
     HexWord keyScheduling[44];                // Array to store all Round Keys
-    // HexWord input[inCount];                   // Array to store the Input Stream
-    // HexWord output[inCount], dec[inCount];    // Array to store the Output Stream
     
     rowParseHexWords(key, rowKeyArray, keyLen);    // Parse the hex string and store it into Array
     keyExpansion(rowKeyArray, keyScheduling, 4);    // Run the Key Scheduling Algorithm and store it inside the
     // KeyScheduling DONE !
-    
-    // rowParseHexWords(in, input, inLen);    // Parse the Input when Input is given in a 128-bit input stream
-    // printf("~ Input ~\n");                 // Print the Input Stored in the WORD Input[]
-    // for (unsigned char i = 0; i < 4; i++) {
-    //     printHexWord(input[i]);
-    // }
-    
-    // The Key Scheduling Output
-    // for (unsigned char i = 0; i < 44; i++) {
-    //     printf("Round %d :: ", i);
-    //     printHexWord(keyScheduling[i]);
-    // }
     // The Keys being stored in Array keyScheduling[]
     
     unsigned char temp_iv[16];                // 16-byte IV
@@ -97,29 +77,10 @@ int main() {
     IV[3].bytes[3].nibbles.low = temp_iv[15];
     IV[3].bytes[3].nibbles.high = temp_iv[15] >> 4;
     
-    // IMPORTANT::UNCOMMENT LATER change later
-    // input_2[0] = IV[0];
-    // input_2[1] = IV[1];
-    // input_2[2] = IV[2];
-    // input_2[3] = IV[3];
-    
-    // Change this later
-    input_2[0] = IV[0] = rowKeyArray[0];
-    input_2[1] = IV[1] = rowKeyArray[1];
-    input_2[2] = IV[2] = rowKeyArray[2];
-    input_2[3] = IV[3] = rowKeyArray[3];
-
-    // IV is Stored
-    printHexWord(input_2[0]);
-    printHexWord(input_2[1]);
-    printHexWord(input_2[2]);
-    printHexWord(input_2[3]);
-
-    // Key is Stored
-    printHexWord(rowKeyArray[0]);
-    printHexWord(rowKeyArray[1]);
-    printHexWord(rowKeyArray[2]);
-    printHexWord(rowKeyArray[3]);
+    input_2[0] = IV[0];
+    input_2[1] = IV[1];
+    input_2[2] = IV[2];
+    input_2[3] = IV[3];
 
     iFile = fopen("hi.txt", "rb");
     oFile = fopen("encrypt.bin", "wb");
@@ -128,20 +89,19 @@ int main() {
         printf("File Couldn't be opened !!");
     return 1; } 
     
-    // EcbEnc(keyScheduling, iFile, oFile);
+    EcbEnc(keyScheduling, iFile, oFile);
     // CbcEnc(input_2, keyScheduling, iFile, oFile);
     // OfbEnc(input_2, keyScheduling, iFile, oFile);
-    CfbEnc(input_2, keyScheduling, iFile, oFile);
+    // CfbEnc(input_2, keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);
-    printf("\n\nENCRYPTED !!!\n\n");
-    
-    // Change this later
-    input_2[0] = IV[0] = rowKeyArray[0];
-    input_2[1] = IV[1] = rowKeyArray[1];
-    input_2[2] = IV[2] = rowKeyArray[2];
-    input_2[3] = IV[3] = rowKeyArray[3];
+    printf("ENCRYPTED !!!\n");
+
+    input_2[0] = IV[0];
+    input_2[1] = IV[1];
+    input_2[2] = IV[2];
+    input_2[3] = IV[3];
     
     iFile = fopen("encrypt.bin", "rb");
     oFile = fopen("decrypt.bin", "wb");
@@ -150,14 +110,14 @@ int main() {
         printf("File Couldn't be opened !!");
     return 1; } 
 
-    // EcbDec(keyScheduling, iFile, oFile);
+    EcbDec(keyScheduling, iFile, oFile);
     // CbcDec(input_2, keyScheduling, iFile, oFile);
     // OfbDec(input_2, keyScheduling, iFile, oFile);
-    CfbDec(input_2, keyScheduling, iFile, oFile);
+    // CfbDec(input_2, keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);
-    printf("\n\nDECRYPTED !!!\n\n");
+    printf("DECRYPTED !!!\n");
 
     return 0;
 }

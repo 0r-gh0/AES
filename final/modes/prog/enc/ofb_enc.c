@@ -72,10 +72,6 @@ void OfbEnc(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile) 
         output[3].bytes[2].byte = output[3].bytes[2].byte ^ in[3].bytes[2].byte;
         output[3].bytes[3].byte = output[3].bytes[3].byte ^ in[3].bytes[3].byte;
 
-        for (unsigned char i = 0; i < 4; i++) {
-            printHexWord(output[i]);
-        }
-
         out_buff[0] = output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
         out_buff[1] = output[0].bytes[1].nibbles.high << 4 | output[0].bytes[1].nibbles.low;
         out_buff[2] = output[0].bytes[2].nibbles.high << 4 | output[0].bytes[2].nibbles.low;
@@ -140,10 +136,6 @@ void OfbEnc(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile) 
     output[3].bytes[1].byte = output[3].bytes[1].byte ^ in[3].bytes[1].byte;
     output[3].bytes[2].byte = output[3].bytes[2].byte ^ in[3].bytes[2].byte;
     output[3].bytes[3].byte = output[3].bytes[3].byte ^ in[3].bytes[3].byte;
-    
-    for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(output[i]);
-    }
     
     out_buff[0] = output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
     out_buff[1] = output[0].bytes[1].nibbles.high << 4 | output[0].bytes[1].nibbles.low;

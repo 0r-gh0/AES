@@ -7,7 +7,7 @@
 void CfbEnc(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile) { 
     unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16], out_buff[16];
     HexWord in[4], output[4];
-while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {    
+    while ((byteRead = fread(buff, 1, 16, iFile)) == 16) { 
         in[0].bytes[0].nibbles.low = buff[0];
         in[0].bytes[0].nibbles.high = buff[0] >> 4;
         in[0].bytes[1].nibbles.low = buff[1];
@@ -65,10 +65,6 @@ while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
         output[3].bytes[1].byte = output[3].bytes[1].byte ^ in[3].bytes[1].byte;
         output[3].bytes[2].byte = output[3].bytes[2].byte ^ in[3].bytes[2].byte;
         output[3].bytes[3].byte = output[3].bytes[3].byte ^ in[3].bytes[3].byte;
-        
-        for (unsigned char i = 0; i < 4; i++) {
-            printHexWord(output[i]);
-        }
         
         input_2[0] = output[0];
         input_2[1] = output[1];
@@ -139,10 +135,7 @@ while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
     output[3].bytes[1].byte = output[3].bytes[1].byte ^ in[3].bytes[1].byte;
     output[3].bytes[2].byte = output[3].bytes[2].byte ^ in[3].bytes[2].byte;
     output[3].bytes[3].byte = output[3].bytes[3].byte ^ in[3].bytes[3].byte;
-    
-    for (unsigned char i = 0; i < 4; i++) {
-        printHexWord(output[i]);
-    }
+
     
     out_buff[0] = output[0].bytes[0].nibbles.high << 4 | output[0].bytes[0].nibbles.low;
     out_buff[1] = output[0].bytes[1].nibbles.high << 4 | output[0].bytes[1].nibbles.low;
