@@ -1,7 +1,7 @@
-#include "enc_dec.h"
-#include "algo.h"
-#include "utils.h"
-#include "main.h"
+#include "../include/enc_dec.h"
+#include "../include/algo.h"
+#include "../include/utils.h"
+#include "../../main.h"
 
 // To perform the Encryption
 void Encrypt(HexWord *in, HexWord *key, HexWord *out) { 
