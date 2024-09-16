@@ -86,7 +86,7 @@ HexWord XOR(const HexWord A, const HexWord B) {
   temp.bytes[3].byte = A.bytes[3].byte ^ B.bytes[3].byte;
   return temp;
 }
-
+    
 // Right Rotate Once a HexWord
 HexWord Rotate(const HexWord A) {
   HexWord temp;

@@ -1,4 +1,4 @@
-modules = ["c-clang14"]
+modules = ["c-clang14", "cpp-clang14", "nix"]
 
 [nix]
 channel = "stable-24_05"
