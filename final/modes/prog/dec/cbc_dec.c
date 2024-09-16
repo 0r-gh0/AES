@@ -1,8 +1,8 @@
-#include "cbc_dec.h"
-#include "enc_dec.h"
-#include "algo.h"
-#include "utils.h"
-#include "main.h"
+#include "../../include/dec/cbc_dec.h"
+#include "../../../run/include/enc_dec.h"
+#include "../../../run/include/algo.h"
+#include "../../../run/include/utils.h"
+#include "../../../main.h"
 
 void CbcDec(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile) { 
     unsigned char byteRead, buff[16], out_buff[16];
