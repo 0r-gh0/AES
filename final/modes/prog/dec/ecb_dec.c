@@ -1,8 +1,8 @@
-#include "ecb_dec.h"  // For EcbDec.c
-#include "enc_dec.h"
-#include "algo.h"
-#include "utils.h"
-#include "main.h"
+#include "../../include/dec/ecb_dec.h"  // For EcbDec.c
+#include "../../../run/include/enc_dec.h"
+#include "../../../run/include/algo.h"
+#include "../../../run/include/utils.h"
+#include "../../../main.h"
 
 void EcbDec(HexWord* keyScheduling, FILE *iFile, FILE *oFile){
     unsigned char byteRead, buff[16], out_buff[16];
