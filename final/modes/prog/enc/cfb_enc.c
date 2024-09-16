@@ -8,8 +8,7 @@ void CfbEnc(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile) 
     unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16], out_buff[16];
     HexWord in[4], output[4];
 
-
-while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
+				while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
         
         in[0].bytes[0].nibbles.low = buff[0];
         in[0].bytes[0].nibbles.high = buff[0] >> 4;
