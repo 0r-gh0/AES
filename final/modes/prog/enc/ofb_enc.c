@@ -1,8 +1,8 @@
-#include "ofb_enc.h"
-#include "enc_dec.h"
-#include "algo.h"
-#include "utils.h"
-#include "main.h"
+#include "../../include/enc/ofb_enc.h"
+#include "../../../run/include/enc_dec.h"
+#include "../../../run/include/algo.h"
+#include "../../../run/include/utils.h"
+#include "../../../main.h"
 
 void OfbEnc(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile) { 
     unsigned char pad, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16], out_buff[16];
