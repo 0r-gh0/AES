@@ -1,6 +1,6 @@
-#include "algo.h"
-#include "utils.h"
-#include "main.h"
+#include "../include/algo.h"
+#include "../include/utils.h"
+#include "../../main.h"
 
 void keyExpansion(HexWord *rowKeyArray, HexWord *keyScheduling, unsigned char sizeNK) { 
     HexWord temp;
