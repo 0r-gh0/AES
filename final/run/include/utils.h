@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "main.h"  // Include for HexWord and HexByte types, and standard libraries
+#include "../../main.h"  // Include for HexWord and HexByte types, and standard libraries
 
 // External declaration for the global sBox array
 extern unsigned char sBox[256];
