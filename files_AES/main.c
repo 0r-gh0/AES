@@ -1,14 +1,16 @@
+#include "enc_dec.h"
+#include "algo.h"
+#include "utils.h"
+#include "main.h"      // For HexWord, HexByte, and any custom types
+
+#include "cfb_enc.h"    // For OfbEnc function
+#include "cfb_dec.h"    // For OfbDec function (if decryption is also needed)
 #include "ofb_enc.h"    // For OfbEnc function
 #include "ofb_dec.h"    // For OfbDec function (if decryption is also needed)
 #include "cbc_enc.h"    // For CbcEnc function
 #include "cbc_dec.h"    // For CbcDec function (if decryption is also needed)
 #include "ecb_enc.h"    // For EcbEnc function
 #include "ecb_dec.h"    // For EcbDec function (if decryption is also needed)
-
-#include "enc_dec.h"
-#include "algo.h"
-#include "utils.h"
-#include "main.h"      // For HexWord, HexByte, and any custom types
 
 int main() {
     HexWord IV[4], input_2[4];
@@ -128,7 +130,8 @@ int main() {
     
     // EcbEnc(keyScheduling, iFile, oFile);
     // CbcEnc(input_2, keyScheduling, iFile, oFile);
-    OfbEnc(input_2, keyScheduling, iFile, oFile);
+    // OfbEnc(input_2, keyScheduling, iFile, oFile);
+    CfbEnc(input_2, keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);
@@ -149,7 +152,8 @@ int main() {
 
     // EcbDec(keyScheduling, iFile, oFile);
     // CbcDec(input_2, keyScheduling, iFile, oFile);
-    OfbDec(input_2, keyScheduling, iFile, oFile);
+    // OfbDec(input_2, keyScheduling, iFile, oFile);
+    CfbDec(input_2, keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);

@@ -6,7 +6,7 @@
 #include "algo.h"
 #include "utils.h"
 
-// Function prototype for OfBEnc
+// Function prototype for OfBDec
 void OfbDec(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile);
 
 #endif // OFB_DEC_H

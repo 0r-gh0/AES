@@ -664,8 +664,7 @@ int main() {
   printHexWord(input_2[3]);
 
   // ECB MODE
-
-  /*
+/*
 printf("\n~ Encryption ~\n");
 while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
   in[0].bytes[0].nibbles.low = buff[0];
@@ -926,11 +925,8 @@ fclose(iFile);
 fclose(oFile);
 
 printf("\n\nDECRYPTED !!!\n"); */
-
   // CBC MODE
-
-
-    /*
+/*
   printf("\n~ Encryption ~\n");
   while ((byteRead = fread(buff, 1, 16, iFile)) == 16) {
     in[0].bytes[0].nibbles.low = buff[0];
@@ -1276,9 +1272,8 @@ printf("\n\nDECRYPTED !!!\n"); */
   printf("\n\nDECRYPTED !!!\n");
 
     */
-
     // OFB
-
+/*
     input_2[0] = IV[0];
     input_2[1] = IV[1];
     input_2[2] = IV[2];
@@ -1617,7 +1612,7 @@ printf("\n\nDECRYPTED !!!\n"); */
       fclose(iFile);
       fclose(oFile);
       printf("\n\nDECRYPTED !!!\n");
-
+*/
     // CFB 
     
 /*
