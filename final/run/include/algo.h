@@ -2,7 +2,7 @@
 #define ALGO_H
 
 #include "utils.h"  // For utility functions and the global sBox
-#include "main.h"  // For HexWord, HexByte, and any other types or constants
+#include "../../main.h"  // For HexWord, HexByte, and any other types or constants
 
 // Function prototypes
 void keyExpansion( HexWord *rowKeyArray, HexWord *keyScheduling,  unsigned char sizeNK);
