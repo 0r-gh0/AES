@@ -1,3 +1,5 @@
+#include "cbc_enc.h"    // For EcbEnc function
+#include "cbc_dec.h"    // For EcbDec function (if decryption is also needed)
 #include "ecb_enc.h"    // For EcbEnc function
 #include "ecb_dec.h"    // For EcbDec function (if decryption is also needed)
 #include "enc_dec.h"
@@ -121,11 +123,18 @@ int main() {
         printf("File Couldn't be opened !!");
     return 1; } 
     
-    EcbEnc(keyScheduling, iFile, oFile);
+    // EcbEnc(keyScheduling, iFile, oFile);
+    CbcEnc(input_2, keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);
     printf("\n\nENCRYPTED !!!\n\n");
+    
+    // Change this later
+    input_2[0] = IV[0] = rowKeyArray[0];
+    input_2[1] = IV[1] = rowKeyArray[1];
+    input_2[2] = IV[2] = rowKeyArray[2];
+    input_2[3] = IV[3] = rowKeyArray[3];
     
     iFile = fopen("encrypt.bin", "rb");
     oFile = fopen("decrypt.bin", "wb");
@@ -134,7 +143,8 @@ int main() {
         printf("File Couldn't be opened !!");
     return 1; } 
 
-    EcbDec(keyScheduling, iFile, oFile);
+    // EcbDec(keyScheduling, iFile, oFile);
+    CbcDec(input_2, keyScheduling, iFile, oFile);
 
     fclose(iFile);
     fclose(oFile);
