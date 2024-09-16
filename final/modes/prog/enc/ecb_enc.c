@@ -1,8 +1,8 @@
-#include "ecb_enc.h"  // For EcbEnc.c
-#include "enc_dec.h"
-#include "algo.h"
-#include "utils.h"
-#include "main.h"
+#include "../../include/enc/ecb_enc.h"  // For EcbEnc.c
+#include "../../../run/include/enc_dec.h"
+#include "../../../run/include/algo.h"
+#include "../../../run/include/utils.h"
+#include "../../../main.h"
 
 void EcbEnc(HexWord* keyScheduling, FILE *iFile, FILE *oFile) { 
     unsigned char pad, t_run, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16], out_buff[16];
