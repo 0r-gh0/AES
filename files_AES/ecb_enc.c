@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "main.h"
 
-void EcbEnc(HexWord* keyScheduling, File* iFile, File* oFile) { 
+void EcbEnc(HexWord* keyScheduling, FILE *iFile, FILE *oFile) { 
     unsigned char pad, t_run, byteRead, temp_i = 0, temp_j = 0, tempCounter = 0, buff[16], out_buff[16];
     HexWord in[4], output[4];
     

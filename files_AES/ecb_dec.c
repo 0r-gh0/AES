@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "main.h"
 
-void EcbDec(HexWord* keyScheduling, File* iFile, File* oFile){
+void EcbDec(HexWord* keyScheduling, FILE *iFile, FILE *oFile){
     unsigned char byteRead, buff[16], out_buff[16];
     HexWord in[4], output[4];
     int pad_counter = 0;

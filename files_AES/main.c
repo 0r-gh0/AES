@@ -30,7 +30,7 @@ int main() {
     
     HexWord rowKeyArray[keyCount];            // Array to store all Initial Keys
     HexWord keyScheduling[44];                // Array to store all Round Keys
-    HexWord input[inCount];                   // Array to store the Input Stream
+    // HexWord input[inCount];                   // Array to store the Input Stream
     // HexWord output[inCount], dec[inCount];    // Array to store the Output Stream
     
     rowParseHexWords(key, rowKeyArray, keyLen);    // Parse the hex string and store it into Array
@@ -121,7 +121,7 @@ int main() {
         printf("File Couldn't be opened !!");
     return 1; } 
     
-    Ecb_Enc(keyScheduling, iFile, oFile);
+    EcbEnc(keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);
@@ -134,11 +134,11 @@ int main() {
         printf("File Couldn't be opened !!");
     return 1; } 
 
-    Ecb_Dec(keyScheduling, iFile, oFile);
+    EcbDec(keyScheduling, iFile, oFile);
 
     fclose(iFile);
     fclose(oFile);
     printf("\n\nDECRYPTED !!!\n\n");
 
-    return 0
+    return 0;
 }

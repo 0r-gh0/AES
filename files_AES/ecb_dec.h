@@ -7,6 +7,6 @@
 #include "utils.h"
 
 // Function prototype for EcbDec
-void EcbDec(HexWord* keyScheduling, FILE* iFile, FILE* oFile);
+void EcbDec(HexWord* keyScheduling, FILE *iFile, FILE *oFile);
 
 #endif // ECB_DEC_H

@@ -7,6 +7,6 @@
 #include "utils.h"
 
 // Function prototype for EcbEnc
-void EcbEnc(HexWord* keyScheduling, FILE* iFile, FILE* oFile);
+void EcbEnc(HexWord* keyScheduling, FILE *iFile, FILE *oFile);
 
 #endif // ECB_ENC_H
