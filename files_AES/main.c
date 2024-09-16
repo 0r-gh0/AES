@@ -1,7 +1,10 @@
-#include "cbc_enc.h"    // For EcbEnc function
-#include "cbc_dec.h"    // For EcbDec function (if decryption is also needed)
+#include "ofb_enc.h"    // For OfbEnc function
+#include "ofb_dec.h"    // For OfbDec function (if decryption is also needed)
+#include "cbc_enc.h"    // For CbcEnc function
+#include "cbc_dec.h"    // For CbcDec function (if decryption is also needed)
 #include "ecb_enc.h"    // For EcbEnc function
 #include "ecb_dec.h"    // For EcbDec function (if decryption is also needed)
+
 #include "enc_dec.h"
 #include "algo.h"
 #include "utils.h"
@@ -124,7 +127,8 @@ int main() {
     return 1; } 
     
     // EcbEnc(keyScheduling, iFile, oFile);
-    CbcEnc(input_2, keyScheduling, iFile, oFile);
+    // CbcEnc(input_2, keyScheduling, iFile, oFile);
+    OfbEnc(input_2, keyScheduling, iFile, oFile);
     
     fclose(iFile);
     fclose(oFile);
@@ -144,8 +148,9 @@ int main() {
     return 1; } 
 
     // EcbDec(keyScheduling, iFile, oFile);
-    CbcDec(input_2, keyScheduling, iFile, oFile);
-
+    // CbcDec(input_2, keyScheduling, iFile, oFile);
+    OfbDec(input_2, keyScheduling, iFile, oFile);
+    
     fclose(iFile);
     fclose(oFile);
     printf("\n\nDECRYPTED !!!\n\n");

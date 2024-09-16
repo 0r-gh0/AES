@@ -6,7 +6,7 @@
 #include "algo.h"
 #include "utils.h"
 
-// Function prototype for EcbEnc
+// Function prototype for CbcEnc
 void CbcEnc(HexWord* input_2, HexWord* keyScheduling, FILE *iFile, FILE *oFile);
 
 #endif // CBC_ENC_H

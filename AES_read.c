@@ -542,7 +542,7 @@ int main() {
 
   char read_block;
   int pad_counter = 0;
-  iFile = fopen("hi_2.txt", "rb");
+  iFile = fopen("KDC.txt", "rb");
   oFile = fopen("encrypt.bin", "wb");
 
   if (iFile == NULL || oFile == NULL) {
@@ -1278,7 +1278,7 @@ printf("\n\nDECRYPTED !!!\n"); */
     */
 
     // OFB
-/*
+
     input_2[0] = IV[0];
     input_2[1] = IV[1];
     input_2[2] = IV[2];
@@ -1617,8 +1617,9 @@ printf("\n\nDECRYPTED !!!\n"); */
       fclose(iFile);
       fclose(oFile);
       printf("\n\nDECRYPTED !!!\n");
-*/
+
     // CFB 
+    
 /*
     input_2[0] = IV[0];
     input_2[1] = IV[1];
